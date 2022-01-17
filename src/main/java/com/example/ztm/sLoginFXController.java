@@ -56,13 +56,17 @@ public class sLoginFXController implements Initializable {
     @FXML
     private void login(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
-            if(tf_Username.getText().equalsIgnoreCase("admin") &&
-                tf_Password.getText().equalsIgnoreCase("admin")) {
-                swapScenes_admin();
-            }
-            else {
-                user = new User(tf_Username.getText(), tf_Password.getText());
-                swapScenes_user();
+            /*
+            LOGIN IF THE RECORD EXISTS
+             */
+            user = new User(tf_Username.getText(), tf_Password.getText());
+            if(true/*RECORD_FOUND*/) {
+                if (tf_Username.getText().equalsIgnoreCase("admin") &&
+                        tf_Password.getText().equalsIgnoreCase("admin")) {
+                    swapScenes_admin();
+                } else {
+                    swapScenes_user();
+                }
             }
         }
     }
@@ -70,15 +74,11 @@ public class sLoginFXController implements Initializable {
     @FXML
     private void register(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
-            if (event.getButton() == MouseButton.PRIMARY) {
-                if(tf_Username.getText().equalsIgnoreCase("admin") &&
-                        tf_Password.getText().equalsIgnoreCase("admin")) {
-                    swapScenes_admin();
-                }
-                else {
-                    user = new User(tf_Username.getText(), tf_Password.getText());
-                    swapScenes_user();
-                }
+            try {
+                new Swapper(false, stage, user, null, null, "startup/registerFXML", "Zarejestruj się");
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
             }
         }
     }
