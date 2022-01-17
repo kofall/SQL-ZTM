@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ztm.aBiletyFXController">
+   <children>
+      <VBox prefHeight="500.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;">
+         <children>
+            <Pane prefHeight="111.0" prefWidth="200.0">
+               <children>
+                  <Label layoutX="65.0" layoutY="38.0" text="BILETY" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="33.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/tickets.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#add" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;" text="Dodaj" textFill="WHITE">
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/add.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#modify" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;" text="Zmodyfikuj" textFill="WHITE">
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/pencil.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#delete" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;" text="Usuń" textFill="WHITE">
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/minus.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#back" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;" text="Cofnij" textFill="WHITE">
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/left.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </VBox>
+      <GridPane layoutX="220.0" layoutY="50.0" prefHeight="430.0" prefWidth="560.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="384.00001373291013" minHeight="10.0" prefHeight="381.60001983642576" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <TableView fx:id="tv_Table" onMousePressed="#modify" prefHeight="286.0" prefWidth="450.0" GridPane.rowIndex="1">
+               <columns>
+                  <TableColumn prefWidth="185.5999755859375" text="Nazwa" />
+                  <TableColumn prefWidth="183.20001220703125" text="Czas obowiązywania" />
+                  <TableColumn prefWidth="67.2000732421875" text="Strefa" />
+                  <TableColumn prefWidth="124.7999267578125" text="Cena" />
+               </columns>
+            </TableView>
+            <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="560.0" spacing="10.0">
+               <children>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/search.png" />
+                     </image>
+                  </ImageView>
+                  <TextField fx:id="tf_Pattern" prefHeight="26.0" prefWidth="370.0" promptText="Nazwa" />
+                  <Button mnemonicParsing="false" onMouseClicked="#find" prefHeight="26.0" prefWidth="125.0" style="-fx-background-color: #0D8E22;" text="Znajdź" textFill="WHITE" />
+               </children>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </HBox>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

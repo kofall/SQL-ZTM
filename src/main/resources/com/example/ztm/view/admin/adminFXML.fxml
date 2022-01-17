@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ztm.aAdminFXController">
+   <children>
+      <VBox prefHeight="500.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;">
+         <children>
+            <Pane prefHeight="111.0" prefWidth="200.0">
+               <children>
+                  <Label layoutX="76.0" layoutY="38.0" text="ZTM" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="41.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/front-of-bus.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#swapKadry" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;" text="Kadry" textFill="WHITE">
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/group.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#swapPojazdy" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;" text="Pojazdy" textFill="WHITE">
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/front-of-bus.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#swapPrzystanki" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;" text="Przystanki" textFill="WHITE">
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/calendar.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#swapLinie" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;" text="Linie" textFill="WHITE">
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/road.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#swapBilety" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;" text="Bilety" textFill="WHITE">
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/tickets.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#swapUlgi" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;" text="Ulgi" textFill="WHITE">
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/percent.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#swapLogout" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;" text="Wyloguj się" textFill="WHITE">
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/turn-off.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </VBox>
+      <Label alignment="CENTER" layoutX="240.0" layoutY="150.0" prefHeight="200.0" prefWidth="520.0" text="Obsługuj swoich pasażerów tak, jakbyś sam chciał być obsłużony." textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Ink Free" size="30.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
