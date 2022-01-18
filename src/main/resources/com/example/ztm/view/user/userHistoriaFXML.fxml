@@ -120,7 +120,7 @@
             <RowConstraints maxHeight="384.00001373291013" minHeight="10.0" prefHeight="381.60001983642576" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <TableView fx:id="tv_Table" prefHeight="286.0" prefWidth="450.0" GridPane.rowIndex="1">
+            <TableView fx:id="tv_Table" onMousePressed="#swapForMoreInfo" prefHeight="286.0" prefWidth="450.0" GridPane.rowIndex="1">
                <columns>
                   <TableColumn prefWidth="32.0" text="ID" />
                   <TableColumn prefWidth="116.0" text="Skasowany" />
@@ -145,5 +145,25 @@
             </HBox>
          </children>
       </GridPane>
+      <Pane layoutX="200.0" layoutY="14.0" prefHeight="35.0" prefWidth="365.0" style="-fx-background-color: #36A848;">
+         <children>
+            <VBox prefHeight="35.0" prefWidth="400.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="400.0" spacing="10.0">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <children>
+                        <Label text="Kliknij dwukrotnie na rekord aby wyświetlić więcej opcji." textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

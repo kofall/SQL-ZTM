@@ -116,6 +116,26 @@ public class uUserHistoriaFXController implements Initializable {
     }
 
     @FXML
+    private void swapForMoreInfo(MouseEvent event) {
+        if(event.getEventType() == MouseEvent.MOUSE_PRESSED) {
+            if(event.getClickCount() == 2) {
+                try {
+                    /*
+                    CHECK IF THE RECORD IS SELECTED
+                     */
+                    Swapper swapper = new Swapper(false, stage, user, null, null, "user/userLinieFXML", null);
+                    /*
+                    do dokończenia
+                     */
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+            }
+        }
+    }
+
+    @FXML
     private void back(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             try {
