@@ -55,7 +55,7 @@ public class aInsertUpdateBiletyFXController implements Initializable {
 
     private void refreshTables() {
         try {
-            prevController.getClass().getMethod("initTables", Stage.class).invoke(prevController);
+            prevController.getClass().getMethod("initTables").invoke(prevController);
         } catch (IllegalAccessException e) {
             "".isEmpty();
         } catch (InvocationTargetException e) {
@@ -71,7 +71,6 @@ public class aInsertUpdateBiletyFXController implements Initializable {
             /*
             ADD THE RECORD IF POSSIBLE
              */
-            refreshTables();
             back(event);
         }
     }
@@ -82,13 +81,14 @@ public class aInsertUpdateBiletyFXController implements Initializable {
             /*
             MODIFY THE RECORD IF EXISTS
              */
-            refreshTables();
+            back(event);
         }
     }
 
     @FXML
     private void back(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
+            refreshTables();
             stage.close();
         }
     }

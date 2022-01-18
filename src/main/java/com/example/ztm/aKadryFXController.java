@@ -169,7 +169,8 @@ public class aKadryFXController implements Initializable {
     private void add(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             try {
-                new Swapper(true, null, user, null, null, "admin/insertUpdateKadryFXML", "Pracownik");
+                Swapper swapper = new Swapper(true, null, user, null, null, "admin/insertUpdateKadryFXML", "Pracownik");
+                ((aInsertUpdateKadryFXController) swapper.getController()).myInitialize(this, null);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -197,7 +198,7 @@ public class aKadryFXController implements Initializable {
                 }else{
                     Map<String,Object> record = selectedItems.get(0);
                     Swapper swapper = new Swapper(true, null, user, null, null, "admin/insertUpdateKadryFXML", "Pracownik");
-                    ((aInsertUpdateKadryFXController) swapper.getController()).myInitialize(record);
+                    ((aInsertUpdateKadryFXController) swapper.getController()).myInitialize(this, record);
                 }
 
             } catch (IOException e) {
@@ -221,7 +222,7 @@ public class aKadryFXController implements Initializable {
                 }else{
                     Map<String,Object> record = selectedItems.get(0);
                     Swapper swapper = new Swapper(true, null, user, null, null, "startup/sureFXML", null);
-                    ((sSureFXController) swapper.getController()).myInitialize(record);
+                    ((sSureFXController) swapper.getController()).myInitialize(this, record);
                 }
 
             } catch (IOException e) {

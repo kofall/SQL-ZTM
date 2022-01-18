@@ -5,6 +5,7 @@
 package com.example.ztm;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.sql.*;
 import java.util.Map;
@@ -35,6 +36,7 @@ public class aInsertUpdateKadryFXController implements Initializable {
 
     private Stage stage = null;
     private User user = null;
+    private Object prevController = null;
 
     public void setStage(Stage stage) { this.stage = stage; }
     public void setUser(User user) { this.user = user; }
@@ -47,10 +49,23 @@ public class aInsertUpdateKadryFXController implements Initializable {
         // TODO
     }    
 
-    public void myInitialize(Map<String, Object> record) {
+    public void myInitialize(Object controller, Map<String, Object> record) {
+        prevController = controller;
         tf_Pesel.setText((String)record.get("pesel"));
         tf_Name.setText((String)record.get("imie"));
         tf_Surname.setText((String)record.get("nazwisko"));
+    }
+
+    private void refreshTables() {
+        try {
+            prevController.getClass().getMethod("initTables").invoke(prevController);
+        } catch (IllegalAccessException e) {
+            "".isEmpty();
+        } catch (InvocationTargetException e) {
+            "".isEmpty();
+        } catch (NoSuchMethodException e) {
+            "".isEmpty();
+        }
     }
 
     @FXML
@@ -218,6 +233,7 @@ public class aInsertUpdateKadryFXController implements Initializable {
     @FXML
     private void back(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
+            refreshTables();
             stage.close();
         }
     }

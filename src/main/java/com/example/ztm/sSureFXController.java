@@ -45,7 +45,7 @@ public class sSureFXController implements Initializable {
 
     private void refreshTables() {
         try {
-            prevController.getClass().getMethod("initTables", Stage.class).invoke(prevController);
+            prevController.getClass().getMethod("initTables").invoke(prevController);
         } catch (IllegalAccessException e) {
             "".isEmpty();
         } catch (InvocationTargetException e) {
@@ -61,7 +61,6 @@ public class sSureFXController implements Initializable {
             /*
             DELETE THE RECORD IF POSSIBLE
              */
-            refreshTables();
             close(event);
         }
     }
@@ -69,6 +68,7 @@ public class sSureFXController implements Initializable {
     @FXML
     private void close(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
+            refreshTables();
             stage.close();
         }
     }
