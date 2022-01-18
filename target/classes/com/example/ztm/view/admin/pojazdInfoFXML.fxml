@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="330.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ztm.aPojazdInfoFXController">
+   <children>
+      <VBox layoutX="20.0" layoutY="20.0" prefHeight="300.0" prefWidth="360.0" spacing="10.0">
+         <children>
+            <VBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="250.0" spacing="1.0">
+               <children>
+                  <Label text="Numer seryjny:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lb_Serial" text="Label" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="250.0" spacing="1.0">
+               <children>
+                  <Label text="Numer rejestracyjny:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lb_Registration" text="Label" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="250.0" spacing="1.0">
+               <children>
+                  <Label text="Liczba miejsc stojących:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lb_StandingPlaces" text="Label" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="250.0" spacing="1.0">
+               <children>
+                  <Label text="Liczba miejsc siedzących:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lb_Seats" text="Label" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="250.0" spacing="1.0">
+               <children>
+                  <Label text="Typ:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lb_Type" text="Label" />
+               </children>
+            </VBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <Button mnemonicParsing="false" onMouseClicked="#back" prefHeight="26.0" prefWidth="125.0" style="-fx-background-color: #0D8E22;" text="OK" textFill="WHITE" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
