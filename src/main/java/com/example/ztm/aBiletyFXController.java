@@ -61,7 +61,8 @@ public class aBiletyFXController implements Initializable {
     private void add(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             try {
-                new Swapper(true, null, user, null, null, "admin/insertUpdateBiletyFXML", "Bilet");
+                Swapper swapper = new Swapper(true, null, user, null, null, "admin/insertUpdateBiletyFXML", "Bilet");
+                ((aInsertUpdateBiletyFXController) swapper.getController()).myInitialize(this, null);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -83,7 +84,7 @@ public class aBiletyFXController implements Initializable {
                 CHECK IF THE RECORD IS SELECTED
                  */
                 Swapper swapper = new Swapper(true, null, user, null, null, "admin/insertUpdateBiletyFXML", "Bilet");
-                ((aInsertUpdateBiletyFXController) swapper.getController()).myInitialize(null/*RECORD*/);
+                ((aInsertUpdateBiletyFXController) swapper.getController()).myInitialize(this, null/*RECORD*/);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -99,7 +100,7 @@ public class aBiletyFXController implements Initializable {
                 CHECK IF THE RECORD IS SELECTED
                  */
                 Swapper swapper = new Swapper(true, null, user, null, null, "startup/sureFXML", null);
-                ((sSureFXController) swapper.getController()).myInitialize(null/*RECORD*/);
+                ((sSureFXController) swapper.getController()).myInitialize(this, null/*RECORD*/);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;

@@ -5,6 +5,7 @@
 package com.example.ztm;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -31,6 +32,7 @@ public class aInsertUpdateKadryFXController implements Initializable {
 
     private Stage stage = null;
     private User user = null;
+    private Object prevController = null;
 
     public void setStage(Stage stage) { this.stage = stage; }
     public void setUser(User user) { this.user = user; }
@@ -41,12 +43,25 @@ public class aInsertUpdateKadryFXController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
-    public void myInitialize(Object record) {
+    public void myInitialize(Object controller, Object record) {
+        prevController = controller;
         /*
         SET THE RECORD IF MODIFY
          */
+    }
+
+    private void refreshTables() {
+        try {
+            prevController.getClass().getMethod("initTables", Stage.class).invoke(prevController);
+        } catch (IllegalAccessException e) {
+            "".isEmpty();
+        } catch (InvocationTargetException e) {
+            "".isEmpty();
+        } catch (NoSuchMethodException e) {
+            "".isEmpty();
+        }
     }
 
     @FXML
@@ -55,6 +70,7 @@ public class aInsertUpdateKadryFXController implements Initializable {
             /*
             ADD THE RECORD IF POSSIBLE
              */
+            refreshTables();
             back(event);
         }
     }
@@ -65,6 +81,7 @@ public class aInsertUpdateKadryFXController implements Initializable {
             /*
             MODIFY THE RECORD IF EXISTS
              */
+            refreshTables();
         }
     }
 

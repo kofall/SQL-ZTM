@@ -47,7 +47,9 @@ public class aKadryFXController implements Initializable {
 
     private Stage stage = null;
     private User user = null;
-
+    public String getUserName() {
+        return user.getUsername();
+    }
     private ObservableList<Map<String, Object>> table_items = FXCollections.<Map<String, Object>>observableArrayList();
     public void setStage(Stage stage) { this.stage = stage; }
     public void setUser(User user) { this.user = user; }
@@ -124,7 +126,8 @@ public class aKadryFXController implements Initializable {
     private void add(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             try {
-                new Swapper(true, null, user, null, null, "admin/insertUpdateKadryFXML", "Pracownik");
+                Swapper swapper = new Swapper(true, null, user, null, null, "admin/insertUpdateKadryFXML", "Pracownik");
+                ((aInsertUpdateKadryFXController) swapper.getController()).myInitialize(this, null);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -146,7 +149,7 @@ public class aKadryFXController implements Initializable {
                 CHECK IF THE RECORD IS SELECTED
                  */
                 Swapper swapper = new Swapper(true, null, user, null, null, "admin/insertUpdateKadryFXML", "Pracownik");
-                ((aInsertUpdateKadryFXController) swapper.getController()).myInitialize(null/*RECORD*/);
+                ((aInsertUpdateKadryFXController) swapper.getController()).myInitialize(this, null/*RECORD*/);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -162,7 +165,7 @@ public class aKadryFXController implements Initializable {
                 CHECK IF THE RECORD IS SELECTED
                  */
                 Swapper swapper = new Swapper(true, null, user, null, null, "startup/sureFXML", null);
-                ((sSureFXController) swapper.getController()).myInitialize(null/*RECORD*/);
+                ((sSureFXController) swapper.getController()).myInitialize(this, null/*RECORD*/);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;

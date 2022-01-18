@@ -4,6 +4,7 @@
  */
 package com.example.ztm;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -33,6 +34,7 @@ public class aInsertUpdateTrasaFXController implements Initializable {
 
     private Stage stage = null;
     private User user = null;
+    private Object prevController = null;
 
     public void setStage(Stage stage) { this.stage = stage; }
     public void setUser(User user) { this.user = user; }
@@ -45,10 +47,23 @@ public class aInsertUpdateTrasaFXController implements Initializable {
         // TODO
     }
 
-    public void myInitialize(Object record) {
+    public void myInitialize(Object controller, Object record) {
+        prevController = controller;
         /*
         SET THE RECORD IF MODIFY
          */
+    }
+
+    private void refreshTables() {
+        try {
+            prevController.getClass().getMethod("initTables", Stage.class).invoke(prevController);
+        } catch (IllegalAccessException e) {
+            "".isEmpty();
+        } catch (InvocationTargetException e) {
+            "".isEmpty();
+        } catch (NoSuchMethodException e) {
+            "".isEmpty();
+        }
     }
 
     @FXML
@@ -71,6 +86,7 @@ public class aInsertUpdateTrasaFXController implements Initializable {
             /*
             ADD THE RECORD IF POSSIBLE
              */
+            refreshTables();
             back(event);
         }
     }
@@ -81,6 +97,7 @@ public class aInsertUpdateTrasaFXController implements Initializable {
             /*
             MODIFY THE RECORD IF EXISTS
              */
+            refreshTables();
         }
     }
 
