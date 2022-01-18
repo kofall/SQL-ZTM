@@ -10,7 +10,8 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -21,22 +22,18 @@ import javafx.stage.Stage;
  *
  * @author kofal
  */
-public class aInsertUpdatePojazdyFXController implements Initializable {
+public class aInsertUpdatePrzejazdyFXController implements Initializable {
 
     @FXML
-    private TextField tf_Serial;
+    private ComboBox<?> cb_Line;
     @FXML
-    private TextField tf_Registration;
+    private ComboBox<?> cb_Driver;
     @FXML
-    private TextField tf_StandingPlaces;
+    private ComboBox<?> cb_Vehicle;
     @FXML
-    private TextField tf_Seats;
+    private DatePicker dp_Start;
     @FXML
-    private TextField tf_Type;
-    @FXML
-    private RadioButton rb_Bus;
-    @FXML
-    private RadioButton rb_Tram;
+    private DatePicker dp_End;
 
     private Stage stage = null;
     private User user = null;
@@ -69,20 +66,6 @@ public class aInsertUpdatePojazdyFXController implements Initializable {
             "".isEmpty();
         } catch (NoSuchMethodException e) {
             "".isEmpty();
-        }
-    }
-
-    @FXML
-    private void updateRBs(MouseEvent event) {
-        if(event.getButton() == MouseButton.PRIMARY) {
-            if(event.getSource() == rb_Bus) {
-                rb_Bus.setSelected(true);
-                rb_Tram.setSelected(false);
-            }
-            else {
-                rb_Bus.setSelected(false);
-                rb_Tram.setSelected(true);
-            }
         }
     }
 

@@ -19,11 +19,11 @@
 
 <AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ztm.uSelectReliefCountFXController">
    <children>
-      <Pane layoutX="200.0" layoutY="25.0" prefHeight="70.0" prefWidth="255.0" style="-fx-background-color: #36A848;">
+      <Pane layoutX="200.0" layoutY="25.0" prefHeight="70.0" prefWidth="300.0" style="-fx-background-color: #36A848;">
          <children>
-            <VBox prefHeight="70.0" prefWidth="400.0">
+            <VBox prefHeight="70.0" prefWidth="300.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="400.0" spacing="10.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="300.0" spacing="10.0">
                      <padding>
                         <Insets left="10.0" />
                      </padding>

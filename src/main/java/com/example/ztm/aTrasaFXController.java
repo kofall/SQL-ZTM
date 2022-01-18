@@ -51,8 +51,10 @@ public class aTrasaFXController implements Initializable {
          */
     }
 
-    public void myInitialize(String lineNumber) {
-        lb_LineNumber.setText(lineNumber);
+    public void myInitialize(Object record) {
+        /*
+        BRUH
+         */
     }
 
     @FXML
@@ -119,7 +121,7 @@ public class aTrasaFXController implements Initializable {
     private void back(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             try {
-                new Swapper(false, stage, user, null, null, "admin/adminFXML", null);
+                new Swapper(false, stage, user, null, null, "admin/linieFXML", null);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;

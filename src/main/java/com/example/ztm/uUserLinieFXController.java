@@ -106,6 +106,24 @@ public class uUserLinieFXController implements Initializable {
     }
 
     @FXML
+    private void swapTrasa(MouseEvent event) {
+        if(event.getEventType() == MouseEvent.MOUSE_PRESSED) {
+            if(event.getClickCount() == 2) {
+                try {
+                    /*
+                    CHECK IF THE RECORD IS SELECTED
+                     */
+                    Swapper swapper = new Swapper(false, stage, user, null, null, "user/trasaFXML", null);
+                    ((uTrasaFXController) swapper.getController()).myInitialize(null/*RECORD*/, "userLinieFXML");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+            }
+        }
+    }
+
+    @FXML
     private void back(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             try {

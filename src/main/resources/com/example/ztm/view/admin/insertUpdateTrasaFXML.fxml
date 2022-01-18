@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
@@ -19,10 +20,10 @@
                   <TextField fx:id="tf_NumberIn" promptText="Numer w trasie" />
                </children>
             </VBox>
-            <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
+            <VBox prefHeight="50.0" prefWidth="360.0" spacing="1.0">
                <children>
                   <Label text="Nazwa przystanku" />
-                  <TextField fx:id="tf_Name" promptText="Nazwa przystanku" />
+                  <ComboBox fx:id="cb_Przystanek" prefWidth="360.0" promptText="Przystanek" />
                </children>
             </VBox>
             <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">

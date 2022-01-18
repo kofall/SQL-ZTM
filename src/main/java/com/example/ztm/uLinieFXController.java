@@ -91,7 +91,7 @@ public class uLinieFXController implements Initializable {
                     CHECK IF THE RECORD IS SELECTED
                      */
                     Swapper swapper = new Swapper(false, stage, user, null, null, "user/trasaFXML", null);
-                    ((uTrasaFXController) swapper.getController()).myInitialize(null/*RECORD*/);
+                    ((uTrasaFXController) swapper.getController()).myInitialize(null/*RECORD*/, "linieFXML");
                 } catch (IOException e) {
                     e.printStackTrace();
                     return;

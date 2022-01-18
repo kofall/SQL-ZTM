@@ -4,7 +4,7 @@
  */
 package com.example.ztm;
 
-import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -22,18 +22,19 @@ import javafx.stage.Stage;
  *
  * @author kofal
  */
-public class uTrasaFXController implements Initializable {
+public class aLiniaInfoFXController implements Initializable {
 
     @FXML
-    private Label LineNumber;
+    private Label lb_Number;
     @FXML
-    private TextField tf_Pattern;
+    private Label lb_Start;
+    @FXML
+    private Label lb_End;
     @FXML
     private TableView<?> tv_Table;
 
     private Stage stage = null;
     private User user = null;
-    private String backFXML = null;
 
     public void setStage(Stage stage) { this.stage = stage; }
     public void setUser(User user) { this.user = user; }
@@ -52,31 +53,16 @@ public class uTrasaFXController implements Initializable {
          */
     }
 
-    public void myInitialize(Object record, String backFXML) {
-        this.backFXML = backFXML;
+    public void myInitialize(Object record) {
         /*
-        SET LineNumber LABEL
+        INITIALIZE LABELS VALUES
          */
-    }
-
-    @FXML
-    private void find(MouseEvent event) {
-        if(event.getButton() == MouseButton.PRIMARY) {
-            /*
-            FIND RECORDS (ObservableList)
-             */
-        }
     }
 
     @FXML
     private void back(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
-            try {
-                new Swapper(false, stage, user, null, null, "user/" + backFXML, null);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
-            }
+            stage.close();
         }
     }
 }

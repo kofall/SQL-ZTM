@@ -1,50 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="250.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ztm.aInsertUpdatePojazdyFXController">
+<AnchorPane id="AnchorPane" prefHeight="250.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ztm.aInsertUpdatePrzejazdyFXController">
    <children>
       <VBox layoutX="20.0" layoutY="20.0" prefHeight="330.0" prefWidth="360.0" spacing="10.0">
          <children>
             <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
                <children>
-                  <Label text="Numer seryjny" />
-                  <TextField fx:id="tf_Serial" promptText="Numer seryjny" />
-               </children>
-            </VBox>
-            <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
-               <children>
-                  <Label text="Numer rejestracyjny" />
-                  <TextField fx:id="tf_Registration" promptText="Numer rejestracyjny" />
-               </children>
-            </VBox>
-            <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
-               <children>
-                  <Label text="Liczba miejsc stojących" />
-                  <TextField fx:id="tf_StandngPlaces" promptText="Liczba miejsc siedzących" />
-               </children>
-            </VBox>
-            <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
-               <children>
-                  <Label text="Liczba miejsc siedzących" />
-                  <TextField fx:id="tf_Seats" promptText="Liczba miejsc siedzących" />
-               </children>
-            </VBox>
-            <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
-               <children>
-                  <Label text="Typ" />
-                  <HBox alignment="CENTER_LEFT" minHeight="25.0" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                  <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
                      <children>
-                        <RadioButton fx:id="rb_Bus" mnemonicParsing="false" onMouseClicked="#updateRBs" selected="true" text="Autobus" />
-                        <RadioButton fx:id="rb_Tram" mnemonicParsing="false" onMouseClicked="#updateRBs" text="Tramwaj" />
+                        <Label text="Linia" />
+                        <ComboBox fx:id="cb_Line" prefWidth="360.0" promptText="Numer" />
                      </children>
-                  </HBox>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
+               <children>
+                  <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
+                     <children>
+                        <Label text="Kierowca" />
+                        <ComboBox fx:id="cb_Driver" prefWidth="360.0" promptText="PESEL" />
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
+               <children>
+                  <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
+                     <children>
+                        <Label text="Pojazd" />
+                        <ComboBox fx:id="cb_Vehicle" prefWidth="360.0" promptText="Numer seryjny" />
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
+               <children>
+                  <Label text="Data rozpoczęcia" />
+                  <DatePicker fx:id="dp_Start" prefWidth="360.0" promptText="Data" />
+               </children>
+            </VBox>
+            <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
+               <children>
+                  <Label text="Data zakończenia" />
+                  <DatePicker fx:id="dp_End" prefWidth="360.0" promptText="Data" />
                </children>
             </VBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">

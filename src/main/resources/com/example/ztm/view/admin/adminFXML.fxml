@@ -14,7 +14,7 @@
    <children>
       <VBox prefHeight="500.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;">
          <children>
-            <Pane prefHeight="111.0" prefWidth="200.0">
+            <Pane prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Label layoutX="76.0" layoutY="38.0" text="ZTM" textFill="WHITE">
                      <font>
@@ -84,6 +84,21 @@
                   <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../images/road.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#swapPrzejazdy" prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;" text="Przejazdy" textFill="WHITE">
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/steering-wheel.png" />
                      </image>
                   </ImageView>
                </graphic>

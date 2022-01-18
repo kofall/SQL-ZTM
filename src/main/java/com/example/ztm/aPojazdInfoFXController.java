@@ -4,14 +4,13 @@
  */
 package com.example.ztm;
 
-import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -22,18 +21,21 @@ import javafx.stage.Stage;
  *
  * @author kofal
  */
-public class uTrasaFXController implements Initializable {
+public class aPojazdInfoFXController implements Initializable {
 
     @FXML
-    private Label LineNumber;
+    private Label lb_Serial;
     @FXML
-    private TextField tf_Pattern;
+    private Label lb_Registration;
     @FXML
-    private TableView<?> tv_Table;
+    private Label lb_StandingPlaces;
+    @FXML
+    private Label lb_Seats;
+    @FXML
+    private Label lb_Type;
 
     private Stage stage = null;
     private User user = null;
-    private String backFXML = null;
 
     public void setStage(Stage stage) { this.stage = stage; }
     public void setUser(User user) { this.user = user; }
@@ -46,37 +48,16 @@ public class uTrasaFXController implements Initializable {
         // TODO
     }
 
-    public void initTables() {
+    public void myInitialize(Object record) {
         /*
-        HERE INITIALIZE TABLE VALUES
+        INITIALIZE LABELS VALUES
          */
-    }
-
-    public void myInitialize(Object record, String backFXML) {
-        this.backFXML = backFXML;
-        /*
-        SET LineNumber LABEL
-         */
-    }
-
-    @FXML
-    private void find(MouseEvent event) {
-        if(event.getButton() == MouseButton.PRIMARY) {
-            /*
-            FIND RECORDS (ObservableList)
-             */
-        }
     }
 
     @FXML
     private void back(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
-            try {
-                new Swapper(false, stage, user, null, null, "user/" + backFXML, null);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
-            }
+            stage.close();
         }
     }
 }
