@@ -121,7 +121,7 @@ public class aPrzejazdyFXController implements Initializable {
         if (event.getButton() == MouseButton.PRIMARY) {
             try {
                 Swapper swapper = new Swapper(true, null, user, null, null, "startup/sureFXML", null);
-                ((sSureFXController) swapper.getController()).myInitialize(this, null/*RECORD*/);
+                ((sSureFXController) swapper.getController()).myInitialize(this, null/*RECORD*/, null);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;

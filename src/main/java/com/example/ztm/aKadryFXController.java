@@ -57,13 +57,13 @@ public class aKadryFXController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-    }
-
-    public void initTables() {
         tv_Pesel.setCellValueFactory(new MapValueFactory<>("pesel"));
         tv_Imie.setCellValueFactory(new MapValueFactory<>("imie"));
         tv_Nazwisko.setCellValueFactory(new MapValueFactory<>("nazwisko"));
+    }
+
+    public void initTables() {
+        table_items.clear();
         Connection conn = null;
         String connectionString =
                 "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/"+
@@ -222,7 +222,7 @@ public class aKadryFXController implements Initializable {
                 }else{
                     Map<String,Object> record = selectedItems.get(0);
                     Swapper swapper = new Swapper(true, null, user, null, null, "startup/sureFXML", null);
-                    ((sSureFXController) swapper.getController()).myInitialize(this, record);
+                    ((sSureFXController) swapper.getController()).myInitialize(this, record, "pesel");
                 }
 
             } catch (IOException e) {

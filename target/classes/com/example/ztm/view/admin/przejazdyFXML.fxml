@@ -140,7 +140,7 @@
                         <Insets left="10.0" />
                      </padding>
                      <children>
-                        <Label text="Kliknij dwukrotnie na rekord aby wyświetlić więcej opcji." textFill="WHITE">
+                        <Label text="Kliknij dwukrotnie na krotkę aby wyświetlić więcej opcji." textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>

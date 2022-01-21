@@ -51,9 +51,12 @@ public class aInsertUpdateKadryFXController implements Initializable {
 
     public void myInitialize(Object controller, Map<String, Object> record) {
         prevController = controller;
-        tf_Pesel.setText((String)record.get("pesel"));
-        tf_Name.setText((String)record.get("imie"));
-        tf_Surname.setText((String)record.get("nazwisko"));
+        if (record != null){
+            tf_Pesel.setText((String)record.get("pesel"));
+            tf_Name.setText((String)record.get("imie"));
+            tf_Surname.setText((String)record.get("nazwisko"));
+        }
+
     }
 
     private void refreshTables() {
@@ -108,6 +111,7 @@ public class aInsertUpdateKadryFXController implements Initializable {
                                 alert.setHeaderText(null);
                                 alert.setContentText("Istnieje kierowca o takim PESELU!");
                                 alert.showAndWait();
+
                             }else if(success==2){
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("Insert Error");
@@ -147,6 +151,7 @@ public class aInsertUpdateKadryFXController implements Initializable {
                     alert.setContentText("Błędny numer PESEL!");
                     alert.showAndWait();
                 }
+                refreshTables();
             }
             back(event);
         }
@@ -225,6 +230,7 @@ public class aInsertUpdateKadryFXController implements Initializable {
                     alert.setContentText("Błędny numer PESEL!");
                     alert.showAndWait();
                 }
+                refreshTables();
             }
             back(event);
         }
