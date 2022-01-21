@@ -255,7 +255,7 @@ public class aPojazdyFXController implements Initializable {
                 }else{
                     Map<String,Object> record = selectedItems.get(0);
                     Swapper swapper = new Swapper(true, null, user, null, null, "startup/sureFXML", null);
-                    ((sSureFXController) swapper.getController()).myInitialize(this, record,"nr_seryjny");
+                    ((sSureFXController) swapper.getController()).myInitialize(this, record,"nr_seryjny", "numer_seryjny", "pojazd");
                 }
 
             } catch (IOException e) {

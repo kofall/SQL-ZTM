@@ -109,7 +109,7 @@ public class aTrasaFXController implements Initializable {
                 CHECK IF THE RECORD IS SELECTED
                  */
                 Swapper swapper = new Swapper(true, null, user, null, null, "startup/sureFXML", null);
-                ((sSureFXController) swapper.getController()).myInitialize(this, null/*RECORD*/, null);
+                ((sSureFXController) swapper.getController()).myInitialize(this, null/*RECORD*/, null, null, null);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;

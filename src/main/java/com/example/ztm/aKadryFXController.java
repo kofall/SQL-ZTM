@@ -222,7 +222,7 @@ public class aKadryFXController implements Initializable {
                 }else{
                     Map<String,Object> record = selectedItems.get(0);
                     Swapper swapper = new Swapper(true, null, user, null, null, "startup/sureFXML", null);
-                    ((sSureFXController) swapper.getController()).myInitialize(this, record, "pesel");
+                    ((sSureFXController) swapper.getController()).myInitialize(this, record, "pesel", "PESEL", "kierowca");
                 }
 
             } catch (IOException e) {

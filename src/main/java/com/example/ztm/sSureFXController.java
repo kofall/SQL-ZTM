@@ -33,6 +33,8 @@ public class sSureFXController implements Initializable {
     private User user = null;
     private Object prevController = null;
     private String keyV;
+    private String pkName;
+    private String tableName;
     public void setStage(Stage stage) { this.stage = stage; }
     public void setUser(User user) { this.user = user; }
 
@@ -44,10 +46,12 @@ public class sSureFXController implements Initializable {
         // TODO
     }
 
-    public void myInitialize(Object controller, Map<String,Object> record, String key) {
+    public void myInitialize(Object controller, Map<String,Object> record, String key, String pk, String table) {
         prevController = controller;
         recordV = record;
         keyV = key;
+        pkName = pk;
+        tableName = table;
         l_message.setText("Czy na pewno chcesz usunąć rekord o kluczu głównym: "+((String) record.get(key))+"?");
     }
 
@@ -76,36 +80,22 @@ public class sSureFXController implements Initializable {
             try {
                 conn = DriverManager.getConnection(connectionString,
                         connectionProps);
-                try (CallableStatement cstmt1 = conn.prepareCall("{? = call usunKierowce(?)}");){
+                String sql_statement = "DELETE FROM "+tableName+" WHERE "+pkName+" = ?";
+                try (PreparedStatement pstmt1 = conn.prepareStatement(sql_statement);){
 
-                    cstmt1.registerOutParameter(1, Types.INTEGER);
                     if (recordV.get(keyV) instanceof String){
-                        cstmt1.setString(2,(String)recordV.get(keyV));
+                        pstmt1.setString(1,(String)recordV.get(keyV));
                     }else if (recordV.get(keyV) instanceof Integer){
-                        cstmt1.setInt(2, (Integer)recordV.get(keyV));
+                        pstmt1.setInt(1, (Integer)recordV.get(keyV));
                     }
-                    cstmt1.execute();
-                    int success = cstmt1.getInt(1);
-                    if(success == 0){
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Insert Error");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Nie istnieje kierowca o takim PESELU!");
-                        alert.showAndWait();
-                    }else if(success == 1){
+                    pstmt1.execute();
 
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Insert Information");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Udane usunięcie kierowcy!");
-                        alert.showAndWait();
-                    }
                 }catch (SQLException ex) {
                     System.out.println(ex.getMessage());
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Insert Error");
+                    alert.setTitle("Delete Error");
                     alert.setHeaderText(null);
-                    alert.setContentText("Failed to execute query!");
+                    alert.setContentText("Nie udało się usunąć rekordu!");
                     alert.showAndWait();
 
                 }

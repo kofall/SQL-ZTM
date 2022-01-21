@@ -30,7 +30,7 @@
             <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
                <children>
                   <Label text="Liczba miejsc stojących" />
-                  <TextField fx:id="tf_StandngPlaces" promptText="Liczba miejsc siedzących" />
+                  <TextField fx:id="tf_StandingPlaces" promptText="Liczba miejsc siedzących" />
                </children>
             </VBox>
             <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
