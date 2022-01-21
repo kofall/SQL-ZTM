@@ -6,6 +6,7 @@ package com.example.ztm;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -53,11 +54,20 @@ public class aInsertUpdatePojazdyFXController implements Initializable {
         // TODO
     }
 
-    public void myInitialize(Object controller, Object record) {
+    public void myInitialize(Object controller, Map<String, Object> record) {
         prevController = controller;
-        /*
-        SET THE RECORD IF MODIFY
-         */
+        if(record != null){
+            tf_Serial.setText((String) record.get("nr_seryjny"));
+            tf_Registration.setText((String) record.get("nr_rejestracyjny"));
+            tf_Seats.setText((String) record.get("siedzace"));
+            tf_StandingPlaces.setText((String) record.get("stojace"));
+            String type = (String) record.get("typ");
+            if (type.equals("Autobus")){
+                rb_Bus.setSelected(true);
+            }else if (type.equals("Tramwaj")){
+                rb_Tram.setSelected(true);
+            }
+        }
     }
 
     private void refreshTables() {
