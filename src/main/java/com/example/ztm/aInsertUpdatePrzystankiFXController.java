@@ -139,8 +139,9 @@ public class aInsertUpdatePrzystankiFXController implements Initializable {
                     alert.showAndWait();
                 }
             }
+            refreshTables();
         }
-        refreshTables();
+
     }
 
     @FXML
@@ -213,9 +214,8 @@ public class aInsertUpdatePrzystankiFXController implements Initializable {
                         alert.showAndWait();
                     }
                 }
+                refreshTables();
             }
-            refreshTables();
-
         }
     }
 

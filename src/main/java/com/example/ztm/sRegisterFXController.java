@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -33,7 +34,7 @@ public class sRegisterFXController implements Initializable {
     @FXML
     private TextField tf_Username;
     @FXML
-    private TextField tf_Password;
+    private PasswordField tf_Password;
     @FXML
     private TextField tf_Email;
     @FXML
