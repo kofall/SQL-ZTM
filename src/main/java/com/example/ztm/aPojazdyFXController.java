@@ -149,6 +149,7 @@ public class aPojazdyFXController implements Initializable {
                 try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM pojazd WHERE numer_seryjny LIKE '%'||?||'%'"); ){
                     pstmt1.setString(1,pattern);
                     ResultSet rs = pstmt1.executeQuery();
+                    table_items.clear();
                     while(rs.next()){
                         Map<String, Object> item = new HashMap<>();
                         item.put("nr_seryjny",rs.getString(1));

@@ -6,10 +6,14 @@ package com.example.ztm;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.sql.*;
+import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -44,11 +48,14 @@ public class aInsertUpdatePrzystankiFXController implements Initializable {
         // TODO
     }
 
-    public void myInitialize(Object controller, Object record) {
+    public void myInitialize(Object controller, Map<String,Object> record) {
         prevController = controller;
-        /*
-        SET THE RECORD IF MODIFY
-         */
+        if(record != null){
+            tf_Name.setText((String) record.get("nazwa"));
+            tf_Type.setText((String) record.get("rodzaj"));
+            tf_Roof.setText((String) record.get("zadaszenie").toString());
+
+        }
     }
 
     private void refreshTables() {
@@ -66,20 +73,149 @@ public class aInsertUpdatePrzystankiFXController implements Initializable {
     @FXML
     private void addRecord(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
-            /*
-            ADD THE RECORD IF POSSIBLE
-             */
-            back(event);
+            if(tf_Name.getText().equals("")){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Insert Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Brakujące dane!");
+                alert.showAndWait();
+            }else{
+                Connection conn = null;
+                String connectionString =
+                        "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/" +
+                                "dblab02_students.cs.put.poznan.pl";
+                Properties connectionProps = new Properties();
+                connectionProps.put("user", "inf145326");
+                connectionProps.put("password", "inf145326");
+                try {
+                    conn = DriverManager.getConnection(connectionString,
+                            connectionProps);
+                    try (CallableStatement cstmt1 = conn.prepareCall("{? = call dodajPrzystanek(?,?,?)}");) {
+                        cstmt1.registerOutParameter(1, Types.INTEGER);
+                        cstmt1.setString(2, tf_Name.getText());
+                        cstmt1.setString(3, tf_Type.getText());
+                        cstmt1.setString(4, tf_Roof.getText());
+
+
+                        cstmt1.execute();
+                        int success = cstmt1.getInt(1);
+                        if (success == 0) {
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Insert Information");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Udane dodanie przystanku!");
+                            alert.showAndWait();
+                        } else if (success == 1) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Insert Error");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Istnieje przystanek o takiej nazwie!");
+                            alert.showAndWait();
+
+                        }
+                    } catch (SQLException ex) {
+                        System.out.println(ex.getMessage());
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Insert Error");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Failed to execute query!");
+                        alert.showAndWait();
+
+                    }
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Connection Error");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Failed to disconnect from the database!");
+                        alert.showAndWait();
+                    }
+                } catch (SQLException ex) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Connection Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Failed to connect to the database!");
+                    alert.showAndWait();
+                }
+            }
         }
+        refreshTables();
     }
 
     @FXML
     private void modifyRecord(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
-            /*
-            MODIFY THE RECORD IF EXISTS
-             */
-            back(event);
+            if(event.getButton() == MouseButton.PRIMARY) {
+                if(tf_Name.getText().equals("")){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Modify Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Brakujące dane!");
+                    alert.showAndWait();
+                }else{
+                    Connection conn = null;
+                    String connectionString =
+                            "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/" +
+                                    "dblab02_students.cs.put.poznan.pl";
+                    Properties connectionProps = new Properties();
+                    connectionProps.put("user", "inf145326");
+                    connectionProps.put("password", "inf145326");
+                    try {
+                        conn = DriverManager.getConnection(connectionString,
+                                connectionProps);
+                        try (CallableStatement cstmt1 = conn.prepareCall("{? = call zmodyfikujPrzystanek(?,?,?)}");) {
+                            cstmt1.registerOutParameter(1, Types.INTEGER);
+                            cstmt1.setString(2, tf_Name.getText());
+                            cstmt1.setString(3, tf_Type.getText());
+                            cstmt1.setString(4, tf_Roof.getText());
+
+
+                            cstmt1.execute();
+                            int success = cstmt1.getInt(1);
+                            if (success == 1) {
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Modify Information");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Udana modyfikacja przystanku!");
+                                alert.showAndWait();
+                            } else if (success == 0) {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Modify Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Nie istnieje przystanek o takiej nazwie!");
+                                alert.showAndWait();
+
+                            }
+                        } catch (SQLException ex) {
+                            System.out.println(ex.getMessage());
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Modify Error");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Failed to execute query!");
+                            alert.showAndWait();
+
+                        }
+                        try {
+                            conn.close();
+                        } catch (SQLException ex) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Connection Error");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Failed to disconnect from the database!");
+                            alert.showAndWait();
+                        }
+                    } catch (SQLException ex) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Connection Error");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Failed to connect to the database!");
+                        alert.showAndWait();
+                    }
+                }
+            }
+            refreshTables();
+
         }
     }
 
