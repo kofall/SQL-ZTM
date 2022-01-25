@@ -253,6 +253,32 @@ public class aTrasaFXController implements Initializable {
     }
 
     @FXML
+    private void swapGodziny(MouseEvent event) {
+        if(event.getEventType() == MouseEvent.MOUSE_PRESSED) {
+            if(event.getClickCount() == 2) {
+                try {
+                    ObservableList<Map<String, Object>> selectedItems = tv_Table.getSelectionModel().getSelectedItems();
+                    if(selectedItems.isEmpty()) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Select Error");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Trasa nie została wybrana!");
+                        alert.showAndWait();
+                    }else {
+                        Map<String,Object> record = selectedItems.get(0);
+                        Swapper swapper = new Swapper(false, stage, user, null, null, "admin/trasaGodzinyFXML", null);
+                        ((aTrasaFXController) swapper.getController()).myInitialize(record);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+            }
+        }
+    }
+
+    @FXML
     private void back(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             try {
