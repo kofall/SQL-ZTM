@@ -142,7 +142,7 @@ public class aPrzejazdyFXController implements Initializable {
     @FXML
     private void find(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
-            table_items.clear();
+            String pattern = tf_Pattern.getText();
             Connection conn = null;
             String connectionString =
                     "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/"+
@@ -153,9 +153,14 @@ public class aPrzejazdyFXController implements Initializable {
             try {
                 conn = DriverManager.getConnection(connectionString,
                         connectionProps);
-                try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM przejazdy WHERE kierowca_pesel LIKE '%'||?||'%' OR pojazd_numer_seryjny LIKE '%'||?||'%' OR linia_nr_lini LIKE '%'||?||'%'"); ){
+                try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM przejazdy WHERE kierowca_pesel LIKE '%'||?||'%' OR pojazd_numer_seryjny LIKE '%'||?||'%' OR TO_CHAR(linia_nr_lini) LIKE '%'||?||'%'"); ){
+                    pstmt1.setString(1,pattern);
+                    pstmt1.setString(2,pattern);
+                    pstmt1.setString(3,pattern);
                     ResultSet rs = pstmt1.executeQuery();
+                    table_items.clear();
                     while(rs.next()){
+
                         Map<String, Object> item = new HashMap<>();
                         item.put("linia_nr",rs.getInt(5));
                         item.put("kierowca",rs.getString(3));
