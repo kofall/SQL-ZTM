@@ -103,11 +103,11 @@ public class aPrzejazdyFXController implements Initializable {
                 ResultSet rs = pstmt1.executeQuery();
                 while(rs.next()){
                     Map<String, Object> item = new HashMap<>();
-                    item.put("linia_nr",rs.getInt(6));
-                    item.put("kierowca",rs.getString(4));
-                    item.put("pojazd", rs.getString(5));
-                    item.put("data_rozp", rs.getTimestamp(2));
-                    item.put("data_zak", rs.getTimestamp(3));
+                    item.put("linia_nr",rs.getInt(5));
+                    item.put("kierowca",rs.getString(3));
+                    item.put("pojazd", rs.getString(4));
+                    item.put("data_rozp", rs.getTimestamp(1));
+                    item.put("data_zak", rs.getTimestamp(2));
 
                     table_items.add(item);
                 }
@@ -157,11 +157,11 @@ public class aPrzejazdyFXController implements Initializable {
                     ResultSet rs = pstmt1.executeQuery();
                     while(rs.next()){
                         Map<String, Object> item = new HashMap<>();
-                        item.put("linia_nr",rs.getInt(6));
-                        item.put("kierowca",rs.getString(4));
-                        item.put("pojazd", rs.getString(5));
-                        item.put("data_rozp", rs.getTimestamp(2).toString());
-                        item.put("data_zak", rs.getTimestamp(3).toString());
+                        item.put("linia_nr",rs.getInt(5));
+                        item.put("kierowca",rs.getString(3));
+                        item.put("pojazd", rs.getString(4));
+                        item.put("data_rozp", rs.getTimestamp(1));
+                        item.put("data_zak", rs.getTimestamp(2));
                         table_items.add(item);
                     }
                     rs.close();
@@ -250,7 +250,7 @@ public class aPrzejazdyFXController implements Initializable {
                 }else{
                     Map<String,Object> record = selectedItems.get(0);
                     Swapper swapper = new Swapper(true, null, user, null, null, "startup/sureFXML", null);
-                    ((sSureFXController) swapper.getController()).myInitialize(this, null/*RECORD*/, null, null, null);
+                    ((sSureFXController) swapper.getController()).myInitialize(this, record);
                 }
 
             } catch (IOException e) {

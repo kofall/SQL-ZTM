@@ -37,7 +37,7 @@ public class sSureFXController implements Initializable {
     private String tableName;
     public void setStage(Stage stage) { this.stage = stage; }
     public void setUser(User user) { this.user = user; }
-
+    boolean przejazdy = false;
     /**
      * Initializes the controller class.
      */
@@ -53,6 +53,12 @@ public class sSureFXController implements Initializable {
         pkName = pk;
         tableName = table;
         l_message.setText("Czy na pewno chcesz usunąć rekord o kluczu głównym: "+((String) record.get(key))+"?");
+    }
+    public void myInitialize(Object controller, Map<String,Object> record) {
+        prevController = controller;
+        recordV = record;
+        przejazdy=true;
+        l_message.setText("Czy na pewno chcesz usunąć ten przejazd?");
     }
 
     private void refreshTables() {
@@ -70,53 +76,105 @@ public class sSureFXController implements Initializable {
     @FXML
     private void deleteANDclose(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
-            Connection conn = null;
-            String connectionString =
-                    "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/"+
-                            "dblab02_students.cs.put.poznan.pl";
-            Properties connectionProps = new Properties();
-            connectionProps.put("user", "inf145326");
-            connectionProps.put("password", "inf145326");
-            try {
-                conn = DriverManager.getConnection(connectionString,
-                        connectionProps);
-                String sql_statement = "DELETE FROM "+tableName+" WHERE "+pkName+" = ?";
-                try (PreparedStatement pstmt1 = conn.prepareStatement(sql_statement);){
-
-                    if (recordV.get(keyV) instanceof String){
-                        pstmt1.setString(1,(String)recordV.get(keyV));
-                    }else if (recordV.get(keyV) instanceof Integer){
-                        pstmt1.setInt(1, (Integer)recordV.get(keyV));
-                    }
-                    pstmt1.execute();
-
-                }catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Delete Error");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Nie udało się usunąć rekordu!");
-                    alert.showAndWait();
-
-                }
+            if(!przejazdy){
+                Connection conn = null;
+                String connectionString =
+                        "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/"+
+                                "dblab02_students.cs.put.poznan.pl";
+                Properties connectionProps = new Properties();
+                connectionProps.put("user", "inf145326");
+                connectionProps.put("password", "inf145326");
                 try {
-                    conn.close();
+                    conn = DriverManager.getConnection(connectionString,
+                            connectionProps);
+                    String sql_statement = "DELETE FROM "+tableName+" WHERE "+pkName+" = ?";
+                    try (PreparedStatement pstmt1 = conn.prepareStatement(sql_statement);){
+
+                        if (recordV.get(keyV) instanceof String){
+                            pstmt1.setString(1,(String)recordV.get(keyV));
+                        }else if (recordV.get(keyV) instanceof Integer){
+                            pstmt1.setInt(1, (Integer)recordV.get(keyV));
+                        }
+                        pstmt1.execute();
+
+                    }catch (SQLException ex) {
+                        System.out.println(ex.getMessage());
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Delete Error");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Nie udało się usunąć rekordu!");
+                        alert.showAndWait();
+
+                    }
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Connection Error");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Failed to disconnect from the database!");
+                        alert.showAndWait();
+                    }
                 } catch (SQLException ex) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Connection Error");
                     alert.setHeaderText(null);
-                    alert.setContentText("Failed to disconnect from the database!");
+                    alert.setContentText("Failed to connect to the database!");
                     alert.showAndWait();
                 }
-            } catch (SQLException ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Connection Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Failed to connect to the database!");
-                alert.showAndWait();
+                refreshTables();
+                close(event);
+            }else{
+                Connection conn = null;
+                String connectionString =
+                        "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/"+
+                                "dblab02_students.cs.put.poznan.pl";
+                Properties connectionProps = new Properties();
+                connectionProps.put("user", "inf145326");
+                connectionProps.put("password", "inf145326");
+                try {
+                    conn = DriverManager.getConnection(connectionString,
+                            connectionProps);
+                    String sql_statement = "DELETE FROM przejazdy WHERE  data_rozpoczecia = ? AND DATA_ZAKONCZENIA = ? AND KIEROWCA_PESEL= ? AND POJAZD_NUMER_SERYJNY= ? AND LINIA_NR_LINI= ?";
+                    try (PreparedStatement pstmt1 = conn.prepareStatement(sql_statement);){
+
+                        pstmt1.setTimestamp(1,(Timestamp) recordV.get("data_rozp"));
+                        pstmt1.setTimestamp(2,(Timestamp) recordV.get("data_zak"));
+                        pstmt1.setString(3, (String) recordV.get("kierowca"));
+                        pstmt1.setString(4, (String) recordV.get("pojazd"));
+                        pstmt1.setInt(5, (Integer) recordV.get("linia_nr"));
+                        pstmt1.execute();
+
+
+                    }catch (SQLException ex) {
+                        System.out.println(ex.getMessage());
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Delete Error");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Nie udało się usunąć rekordu!");
+                        alert.showAndWait();
+
+                    }
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Connection Error");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Failed to disconnect from the database!");
+                        alert.showAndWait();
+                    }
+                } catch (SQLException ex) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Connection Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Failed to connect to the database!");
+                    alert.showAndWait();
+                }
+                refreshTables();
+                close(event);
             }
-            refreshTables();
-            close(event);
+
         }
     }
 
