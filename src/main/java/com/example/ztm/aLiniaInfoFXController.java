@@ -63,7 +63,6 @@ public class aLiniaInfoFXController implements Initializable {
     }
 
     public void initTables() {
-        table_items.clear();
         Connection conn = null;
         String connectionString =
                 "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/"+
