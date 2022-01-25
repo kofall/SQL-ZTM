@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 public class aTrasaGodzinyFXController implements Initializable {
 
     @FXML
-    private TableView<?> tv_Table;
+    private TableView<Map<String, Object>> tv_Table;
     @FXML
     private TextField tf_Pattern;
     @FXML

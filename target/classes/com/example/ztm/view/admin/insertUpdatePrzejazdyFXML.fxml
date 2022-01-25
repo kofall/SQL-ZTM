@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -8,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="250.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ztm.aInsertUpdatePrzejazdyFXController">
+<AnchorPane id="AnchorPane" prefHeight="250.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ztm.aInsertUpdatePrzejazdyFXController">
    <children>
       <VBox layoutX="20.0" layoutY="20.0" prefHeight="330.0" prefWidth="360.0" spacing="10.0">
          <children>
@@ -45,13 +49,31 @@
             <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
                <children>
                   <Label text="Data rozpoczęcia" />
-                  <DatePicker fx:id="dp_Start" prefWidth="360.0" promptText="Data" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <DatePicker fx:id="dp_Start" prefHeight="31.0" prefWidth="246.0" promptText="Data" />
+                        <TextField fx:id="tf_Godz_rozp" prefHeight="31.0" prefWidth="188.0" promptText="Godzina">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
             <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
                <children>
                   <Label text="Data zakończenia" />
-                  <DatePicker fx:id="dp_End" prefWidth="360.0" promptText="Data" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <DatePicker fx:id="dp_End" prefWidth="360.0" promptText="Data" />
+                        <TextField fx:id="tf_Godz_zak" prefHeight="31.0" prefWidth="300.0" promptText="Godzina">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">

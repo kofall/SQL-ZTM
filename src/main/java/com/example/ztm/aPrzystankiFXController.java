@@ -218,7 +218,7 @@ public class aPrzystankiFXController implements Initializable {
                 ObservableList<Map<String, Object>> selectedItems = tv_Table.getSelectionModel().getSelectedItems();
                 if(selectedItems.isEmpty()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Modify Error");
+                    alert.setTitle("Delete Error");
                     alert.setHeaderText(null);
                     alert.setContentText("Przystanek nie został wybrany!");
                     alert.showAndWait();
