@@ -38,6 +38,20 @@ public class aPrzejazdyFXController implements Initializable {
     @FXML
     private TextField tf_Pattern;
 
+    @FXML
+    private TableColumn<Map, String> tc_Linia_nr;
+
+    @FXML
+    private TableColumn<Map, String> tc_Kierowca;
+
+    @FXML
+    private TableColumn<Map, String> tc_Pojazd;
+
+    @FXML
+    private TableColumn<Map, String> tc_Data_rozp;
+
+    @FXML
+    private TableColumn<Map, String> tc_Data_zak;
     private Stage stage = null;
     private User user = null;
 
@@ -50,6 +64,11 @@ public class aPrzejazdyFXController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        tc_Linia_nr.setCellValueFactory(new MapValueFactory<>("linia_nr"));
+        tc_Kierowca.setCellValueFactory(new MapValueFactory<>("kierowca"));
+        tc_Pojazd.setCellValueFactory(new MapValueFactory<>("pojazd"));
+        tc_Data_rozp.setCellValueFactory(new MapValueFactory<>("data_rozp"));
+        tc_Data_zak.setCellValueFactory(new MapValueFactory<>("data_zak"));
         tv_Table.getSelectionModel().setCellSelectionEnabled(true);
 
         final ObservableList<TablePosition> selectedCells = tv_Table.getSelectionModel().getSelectedCells();
@@ -69,15 +88,108 @@ public class aPrzejazdyFXController implements Initializable {
     }
 
     public void initTables() {
-        /*
-        YOU KNOW BRO, HERE SHOULD BE SOME INITS, COFFEE BREAK YEEEEEEAH EASTEREGG
-         */
+        table_items.clear();
+        Connection conn = null;
+        String connectionString =
+                "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/"+
+                        "dblab02_students.cs.put.poznan.pl";
+        Properties connectionProps = new Properties();
+        connectionProps.put("user", "inf145326");
+        connectionProps.put("password", "inf145326");
+        try {
+            conn = DriverManager.getConnection(connectionString,
+                    connectionProps);
+            try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM przejazdy"); ){
+                ResultSet rs = pstmt1.executeQuery();
+                while(rs.next()){
+                    Map<String, Object> item = new HashMap<>();
+                    item.put("linia_nr",rs.getInt(6));
+                    item.put("kierowca",rs.getString(4));
+                    item.put("pojazd", rs.getString(5));
+                    item.put("data_rozp", rs.getTimestamp(2));
+                    item.put("data_zak", rs.getTimestamp(3));
+
+                    table_items.add(item);
+                }
+                rs.close();
+                tv_Table.setItems(table_items);
+            }catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Loading Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to execute query!");
+                alert.showAndWait();
+            }
+            try {
+                conn.close();
+            } catch (SQLException ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Connection Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to disconnect from the database!");
+                alert.showAndWait();
+            }
+        } catch (SQLException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Connection Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Failed to connect to the database!");
+            alert.showAndWait();
+        }
     }
 
     @FXML
     private void find(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
-
+            table_items.clear();
+            Connection conn = null;
+            String connectionString =
+                    "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/"+
+                            "dblab02_students.cs.put.poznan.pl";
+            Properties connectionProps = new Properties();
+            connectionProps.put("user", "inf145326");
+            connectionProps.put("password", "inf145326");
+            try {
+                conn = DriverManager.getConnection(connectionString,
+                        connectionProps);
+                try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM przejazdy WHERE kierowca_pesel LIKE '%'||?||'%' OR pojazd_numer_seryjny LIKE '%'||?||'%' OR linia_nr_lini LIKE '%'||?||'%'"); ){
+                    ResultSet rs = pstmt1.executeQuery();
+                    while(rs.next()){
+                        Map<String, Object> item = new HashMap<>();
+                        item.put("linia_nr",rs.getInt(6));
+                        item.put("kierowca",rs.getString(4));
+                        item.put("pojazd", rs.getString(5));
+                        item.put("data_rozp", rs.getTimestamp(2).toString());
+                        item.put("data_zak", rs.getTimestamp(3).toString());
+                        table_items.add(item);
+                    }
+                    rs.close();
+                    tv_Table.setItems(table_items);
+                }catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Loading Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Failed to execute query!");
+                    alert.showAndWait();
+                }
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Connection Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Failed to disconnect from the database!");
+                    alert.showAndWait();
+                }
+            } catch (SQLException ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Connection Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to connect to the database!");
+                alert.showAndWait();
+            }
         }
     }
 
@@ -104,11 +216,19 @@ public class aPrzejazdyFXController implements Initializable {
         }
         if (event.getButton() == MouseButton.PRIMARY) {
             try {
-                /*
-                CHECK IF THE RECORD IS SELECTED
-                 */
-                Swapper swapper = new Swapper(true, null, user, null, null, "admin/insertUpdatePrzejazdyFXML", "Przejazd");
-                ((aInsertUpdatePrzejazdyFXController) swapper.getController()).myInitialize(this, null/*RECORD*/);
+                ObservableList<Map<String, Object>> selectedItems = tv_Table.getSelectionModel().getSelectedItems();
+                if(selectedItems.isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Modify Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Przejazd nie został wybrany!");
+                    alert.showAndWait();
+                }else{
+                    Map<String,Object> record = selectedItems.get(0);
+                    Swapper swapper = new Swapper(true, null, user, null, null, "admin/insertUpdatePrzejazdyFXML", "Przejazd");
+                    ((aInsertUpdatePrzejazdyFXController) swapper.getController()).myInitialize(this, record);
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -120,8 +240,19 @@ public class aPrzejazdyFXController implements Initializable {
     private void delete(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             try {
-                Swapper swapper = new Swapper(true, null, user, null, null, "startup/sureFXML", null);
-                ((sSureFXController) swapper.getController()).myInitialize(this, null/*RECORD*/, null, null, null);
+                ObservableList<Map<String, Object>> selectedItems = tv_Table.getSelectionModel().getSelectedItems();
+                if(selectedItems.isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Delete Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Przejazd nie został wybrany!");
+                    alert.showAndWait();
+                }else{
+                    Map<String,Object> record = selectedItems.get(0);
+                    Swapper swapper = new Swapper(true, null, user, null, null, "startup/sureFXML", null);
+                    ((sSureFXController) swapper.getController()).myInitialize(this, null/*RECORD*/, null, null, null);
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -137,13 +268,13 @@ public class aPrzejazdyFXController implements Initializable {
                     switch (column) {
                         case "Linia nr":
                             swapper = new Swapper(true, null, user, null, null, "admin/liniaInfoFXML", column);
-                            ((aLiniaInfoFXController) swapper.getController()).myInitialize(null/*RECORD*/);
+                            ((aLiniaInfoFXController) swapper.getController()).myInitialize(record);
                         case "Kierowca":
                             swapper = new Swapper(true, null, user, null, null, "admin/kierowcaInfoFXML", column);
-                            ((aKierowcaInfoFXController) swapper.getController()).myInitialize(null/*RECORD*/);
+                            ((aKierowcaInfoFXController) swapper.getController()).myInitialize(record);
                         case "Pojazd":
                             swapper = new Swapper(true, null, user, null, null, "admin/pojazdInfoFXML", column);
-                            ((aPojazdInfoFXController) swapper.getController()).myInitialize(null/*RECORD*/);
+                            ((aPojazdInfoFXController) swapper.getController()).myInitialize(record);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
