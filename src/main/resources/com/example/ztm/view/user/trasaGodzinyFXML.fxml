@@ -17,20 +17,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ztm.uTrasaFXController">
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ztm.uTrasaGodzinyFXController">
    <children>
       <VBox prefHeight="500.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;">
          <children>
             <Pane prefHeight="111.0" prefWidth="200.0">
                <children>
-                  <Label layoutX="65.0" layoutY="38.0" text="TRASA" textFill="WHITE">
+                  <Label layoutX="60.0" layoutY="38.0" text="ODJAZDY" textFill="WHITE">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="33.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="30.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../images/road.png" />
+                        <Image url="@../../images/hourglass.png" />
                      </image>
                   </ImageView>
                </children>
@@ -52,7 +52,7 @@
             </Button>
          </children>
       </VBox>
-      <GridPane layoutX="220.0" layoutY="110.0" prefHeight="370.0" prefWidth="560.0">
+      <GridPane layoutX="220.0" layoutY="130.0" prefHeight="350.0" prefWidth="560.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
          </columnConstraints>
@@ -61,11 +61,9 @@
             <RowConstraints maxHeight="384.00001373291013" minHeight="10.0" prefHeight="381.60001983642576" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <TableView fx:id="tv_Table" onMousePressed="#swapGodziny" prefHeight="286.0" prefWidth="450.0" GridPane.rowIndex="1">
+            <TableView fx:id="tv_Table" onMousePressed="#modify" prefHeight="286.0" prefWidth="450.0" GridPane.rowIndex="1">
                <columns>
-                  <TableColumn prefWidth="82.39996337890625" text="Nr w trasie" />
-                  <TableColumn prefWidth="360.7999267578125" text="Nazwa przystanku" />
-                  <TableColumn prefWidth="118.40008544921875" text="Na żądanie" />
+                  <TableColumn fx:id="tc_Nazwa" prefWidth="560.0" text="Godzina odjazdu" />
                </columns>
             </TableView>
             <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="560.0" spacing="10.0">
@@ -75,7 +73,7 @@
                         <Image url="@../../images/search.png" />
                      </image>
                   </ImageView>
-                  <TextField fx:id="tf_Pattern" prefHeight="26.0" prefWidth="370.0" promptText="Numer w trasie" />
+                  <TextField fx:id="tf_Pattern" prefHeight="26.0" prefWidth="370.0" promptText="Godzina" />
                   <Button mnemonicParsing="false" onMouseClicked="#find" prefHeight="26.0" prefWidth="125.0" style="-fx-background-color: #0D8E22;" text="Znajdź" textFill="WHITE" />
                </children>
                <GridPane.margin>
@@ -84,16 +82,16 @@
             </HBox>
          </children>
       </GridPane>
-      <Pane layoutX="200.0" layoutY="20.0" prefHeight="35.0" prefWidth="365.0" style="-fx-background-color: #36A848;">
+      <Pane layoutX="200.0" layoutY="40.0" prefHeight="70.0" prefWidth="255.0" style="-fx-background-color: #36A848;">
          <children>
-            <VBox prefHeight="35.0" prefWidth="400.0">
+            <VBox prefHeight="70.0" prefWidth="400.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="400.0" spacing="10.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="400.0" spacing="50.0">
                      <padding>
                         <Insets left="10.0" />
                      </padding>
                      <children>
-                        <Label text="Numer" textFill="WHITE">
+                        <Label text="Linia" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -105,20 +103,17 @@
                         </Label>
                      </children>
                   </HBox>
-               </children>
-            </VBox>
-         </children>
-      </Pane>
-      <Pane layoutX="200.0" layoutY="55.0" prefHeight="35.0" prefWidth="365.0" style="-fx-background-color: #36A848;">
-         <children>
-            <VBox prefHeight="35.0" prefWidth="400.0">
-               <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="400.0" spacing="10.0">
                      <padding>
                         <Insets left="10.0" />
                      </padding>
                      <children>
-                        <Label text="Kliknij dwukrotnie na rekord aby wyświetlić więcej opcji." textFill="WHITE">
+                        <Label text="Przystanek" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lb_Przystanek" text="brak..." textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>

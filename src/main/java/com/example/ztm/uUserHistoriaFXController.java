@@ -123,7 +123,7 @@ public class uUserHistoriaFXController implements Initializable {
                     /*
                     CHECK IF THE RECORD IS SELECTED
                      */
-                    Swapper swapper = new Swapper(false, stage, user, null, null, "user/userLinieFXML", null);
+                    Swapper swapper = new Swapper(false, stage, user, null, null, "user/userHistoriaBiletInfoFXML", null);
                     /*
                     do dokończenia
                      */

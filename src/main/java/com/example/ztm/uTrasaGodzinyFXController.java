@@ -22,10 +22,12 @@ import javafx.stage.Stage;
  *
  * @author kofal
  */
-public class uTrasaFXController implements Initializable {
+public class uTrasaGodzinyFXController implements Initializable {
 
     @FXML
     private Label lb_LineNumber;
+    @FXML
+    private Label lb_Przystanek;
     @FXML
     private TextField tf_Pattern;
     @FXML
@@ -69,28 +71,11 @@ public class uTrasaFXController implements Initializable {
     }
 
     @FXML
-    private void swapGodziny(MouseEvent event) {
-        if(event.getEventType() == MouseEvent.MOUSE_PRESSED) {
-            if(event.getClickCount() == 2) {
-                try {
-                    /*
-                    CHECK IF THE RECORD IS SELECTED
-                     */
-                    Swapper swapper = new Swapper(false, stage, user, null, null, "user/trasaGodzinyFXML", null);
-                    ((uTrasaFXController) swapper.getController()).myInitialize(null/*RECORD*/, backFXML);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return;
-                }
-            }
-        }
-    }
-
-    @FXML
     private void back(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
             try {
-                new Swapper(false, stage, user, null, null, "user/" + backFXML, null);
+                Swapper swapper = new Swapper(false, stage, user, null, null, "user/trasaFXML", null);
+                ((uTrasaFXController) swapper.getController()).myInitialize(null/*RECORD*/, backFXML);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
