@@ -19,9 +19,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import javafx.util.converter.IntegerStringConverter;
 
 /**
  * FXML Controller class
@@ -58,8 +61,13 @@ public class uSelectReliefCountFXController implements Initializable {
     private ObservableList<Map<String, Object>> tableUlgi_items = FXCollections.<Map<String, Object>>observableArrayList();
     private ObservableList<Wybrane> tableWybrane_items = FXCollections.<Wybrane>observableArrayList();
 
-    public void setStage(Stage stage) { this.stage = stage; }
-    public void setUser(User user) { this.user = user; }
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     /**
      * Initializes the controller class.
@@ -72,7 +80,6 @@ public class uSelectReliefCountFXController implements Initializable {
         tc_WybraneNazwa.setCellValueFactory(new PropertyValueFactory<Wybrane, String>("ulgi_nazwa"));
         tc_WybraneIlosc.setCellValueFactory(new PropertyValueFactory<Wybrane, String>("ilosc"));
         tc_WybraneKoszt.setCellValueFactory(new PropertyValueFactory<Wybrane, String>("koszt"));
-//        tc_WybraneIlosc
     }
 
     public void initTables() {
@@ -135,7 +142,7 @@ public class uSelectReliefCountFXController implements Initializable {
 
     @FXML
     private void find(MouseEvent event) {
-        if(event.getButton() == MouseButton.PRIMARY) {
+        if (event.getButton() == MouseButton.PRIMARY) {
             String pattern = tf_Pattern.getText();
             Connection conn = null;
             String connectionString =
@@ -152,13 +159,10 @@ public class uSelectReliefCountFXController implements Initializable {
                     ResultSet rs = pstmt1.executeQuery();
                     tableUlgi_items.clear();
                     while (rs.next()) {
-                        ResultSet rs1 = pstmt1.executeQuery();
-                        while (rs1.next()) {
-                            Map<String, Object> item = new HashMap<>();
-                            item.put("ulgi_nazwa", rs1.getString(1));
-                            item.put("ulgi_znizka", rs1.getString(2));
-                            tableUlgi_items.add(item);
-                        }
+                        Map<String, Object> item = new HashMap<>();
+                        item.put("ulgi_nazwa", rs.getString(1));
+                        item.put("ulgi_znizka", rs.getString(2));
+                        tableUlgi_items.add(item);
                     }
                     rs.close();
                     tv_TableUlgi.setItems(tableUlgi_items);
@@ -210,16 +214,17 @@ public class uSelectReliefCountFXController implements Initializable {
                             (String) (record).get("ulgi_znizka")
                     );
                     tableWybrane_items.add(wybrany);
-                    updateKoszt();
+                    updateKoszt(event);
                 }
             }
         }
     }
 
-    private void updateKoszt() {
+    @FXML
+    private void updateKoszt(MouseEvent event) {
         float totalPrice = 0;
-        for(Wybrane record : tableWybrane_items) {
-            float curr = Integer.valueOf(record.getIlosc().getText()) * (Float.valueOf(lb_Price.getText()) * (1 - record.getZnizka()));
+        for (Wybrane record : tableWybrane_items) {
+            float curr = (float) (Integer.valueOf(record.getIlosc().getText()) * (Float.valueOf(lb_Price.getText()) * (1 - record.getZnizka() / 100.0)));
             totalPrice += curr;
             record.setKoszt(curr);
         }
@@ -245,7 +250,7 @@ public class uSelectReliefCountFXController implements Initializable {
 
     @FXML
     private void addToCart(MouseEvent event) {
-        if(event.getButton() == MouseButton.PRIMARY) {
+        if (event.getButton() == MouseButton.PRIMARY) {
             user.addToKoszyk_items(tableWybrane_items);
             back(event);
         }
@@ -253,7 +258,7 @@ public class uSelectReliefCountFXController implements Initializable {
 
     @FXML
     private void back(MouseEvent event) {
-        if(event.getButton() == MouseButton.PRIMARY) {
+        if (event.getButton() == MouseButton.PRIMARY) {
             try {
                 Swapper swapper = new Swapper(false, stage, user, null, null, "user/buyTicketFXML", null);
                 ((uBuyTicketFXController) swapper.getController()).myInitialize(false);

@@ -17,40 +17,40 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ztm.uSelectReliefCountFXController">
+<AnchorPane id="AnchorPane" onMouseClicked="#updateKoszt" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ztm.uSelectReliefCountFXController">
    <children>
-      <Pane layoutX="200.0" layoutY="25.0" prefHeight="70.0" prefWidth="300.0" style="-fx-background-color: #36A848;">
+      <Pane layoutX="200.0" layoutY="25.0" onMouseClicked="#updateKoszt" prefHeight="70.0" prefWidth="300.0" style="-fx-background-color: #36A848;">
          <children>
-            <VBox prefHeight="70.0" prefWidth="300.0">
+            <VBox onMouseClicked="#updateKoszt" prefHeight="70.0" prefWidth="300.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="300.0" spacing="10.0">
+                  <HBox alignment="CENTER_LEFT" onMouseClicked="#updateKoszt" prefHeight="35.0" prefWidth="300.0" spacing="10.0">
                      <padding>
                         <Insets left="10.0" />
                      </padding>
                      <children>
-                        <Label text="Nazwa:" textFill="WHITE">
+                        <Label onMouseClicked="#updateKoszt" text="Nazwa:" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lb_Name" text="brak..." textFill="WHITE">
+                        <Label fx:id="lb_Name" onMouseClicked="#updateKoszt" text="brak..." textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="400.0" spacing="10.0">
+                  <HBox alignment="CENTER_LEFT" onMouseClicked="#updateKoszt" prefHeight="35.0" prefWidth="400.0" spacing="10.0">
                      <padding>
                         <Insets left="10.0" />
                      </padding>
                      <children>
-                        <Label text="Cena:" textFill="WHITE">
+                        <Label onMouseClicked="#updateKoszt" text="Cena:" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lb_Price" text="brak..." textFill="WHITE">
+                        <Label fx:id="lb_Price" onMouseClicked="#updateKoszt" text="brak..." textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -61,16 +61,16 @@
             </VBox>
          </children>
       </Pane>
-      <VBox prefHeight="500.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;">
+      <VBox onMouseClicked="#updateKoszt" prefHeight="500.0" prefWidth="200.0" style="-fx-background-color: #0D8E22;">
          <children>
-            <Pane prefHeight="111.0" prefWidth="200.0">
+            <Pane onMouseClicked="#updateKoszt" prefHeight="111.0" prefWidth="200.0">
                <children>
-                  <Label alignment="CENTER" layoutX="45.0" layoutY="17.0" prefHeight="79.0" prefWidth="126.0" text="WYBRANY" textFill="WHITE" wrapText="true">
+                  <Label alignment="CENTER" layoutX="45.0" layoutY="17.0" onMouseClicked="#updateKoszt" prefHeight="79.0" prefWidth="126.0" text="WYBRANY" textFill="WHITE" wrapText="true">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="21.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="21.0" layoutY="44.0" onMouseClicked="#updateKoszt" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../images/tickets.png" />
                      </image>
@@ -94,7 +94,7 @@
             </Button>
          </children>
       </VBox>
-      <GridPane layoutX="220.0" layoutY="115.0" prefHeight="365.0" prefWidth="560.0">
+      <GridPane layoutX="220.0" layoutY="115.0" onMouseClicked="#updateKoszt" prefHeight="365.0" prefWidth="560.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
          </columnConstraints>
@@ -105,7 +105,7 @@
             <RowConstraints maxHeight="384.00001373291013" minHeight="10.0" prefHeight="131.20001220703125" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="560.0" spacing="10.0">
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#updateKoszt" prefHeight="42.0" prefWidth="560.0" spacing="10.0">
                <children>
                   <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -119,13 +119,13 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </HBox>
-            <TableView fx:id="tv_TableUlgi" onMousePressed="#addUlga" prefHeight="234.0" prefWidth="560.0" GridPane.rowIndex="1">
+            <TableView fx:id="tv_TableUlgi" onMouseClicked="#updateKoszt" onMousePressed="#addUlga" prefHeight="234.0" prefWidth="560.0" GridPane.rowIndex="1">
                <columns>
                   <TableColumn fx:id="tc_UlgiNazwa" prefWidth="348.00006103515625" text="Nazwa" />
                   <TableColumn fx:id="tc_UlgiZnizka" prefWidth="210.39990234375" text="Wartość procentowa" />
                </columns>
             </TableView>
-            <GridPane GridPane.rowIndex="3">
+            <GridPane onMouseClicked="#updateKoszt" GridPane.rowIndex="3">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="350.0" minWidth="375.0" prefWidth="375.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
@@ -135,14 +135,14 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <TableView fx:id="tv_TableWybraneUlgi" prefHeight="120.0" prefWidth="375.0">
+                  <TableView fx:id="tv_TableWybraneUlgi" onMouseClicked="#updateKoszt" prefHeight="120.0" prefWidth="375.0">
                      <columns>
                         <TableColumn fx:id="tc_WybraneNazwa" prefWidth="224.0" text="Ulga" />
                         <TableColumn fx:id="tc_WybraneIlosc" prefWidth="63.20001220703125" text="Ilość" />
                         <TableColumn fx:id="tc_WybraneKoszt" prefWidth="86.4000244140625" text="Koszt" />
                      </columns>
                   </TableView>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="2">
+                  <VBox alignment="CENTER" onMouseClicked="#updateKoszt" prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="2">
                      <children>
                         <VBox alignment="CENTER" maxWidth="150.0" minWidth="150.0" prefHeight="70.0" prefWidth="150.0" style="-fx-background-color: #0D8E22;">
                            <children>
