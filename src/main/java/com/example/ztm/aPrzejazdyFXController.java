@@ -24,6 +24,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -39,7 +40,7 @@ public class aPrzejazdyFXController implements Initializable {
     private TextField tf_Pattern;
 
     @FXML
-    private TableColumn<Map, String> tc_Linia_nr;
+    private TableColumn<Map, Integer> tc_Linia_nr;
 
     @FXML
     private TableColumn<Map, String> tc_Kierowca;
@@ -70,20 +71,104 @@ public class aPrzejazdyFXController implements Initializable {
         tc_Data_rozp.setCellValueFactory(new MapValueFactory<>("data_rozp"));
         tc_Data_zak.setCellValueFactory(new MapValueFactory<>("data_zak"));
         tv_Table.getSelectionModel().setCellSelectionEnabled(true);
+    }
 
-        final ObservableList<TablePosition> selectedCells = tv_Table.getSelectionModel().getSelectedCells();
-        selectedCells.addListener(new ListChangeListener<TablePosition>() {
+    public void myInitialize() {
+        tc_Linia_nr.setCellFactory(new Callback<TableColumn<Map, Integer>, TableCell<Map, Integer>>() {
             @Override
-            public void onChanged(Change change) {
-                for (TablePosition pos : selectedCells) {
-                    EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent event) {
-                            swapForMoreInfo(event, pos.getRow(), pos.getTableColumn().getText());
+            public TableCell<Map, Integer> call(TableColumn<Map, Integer> mapStringTableColumn) {
+                final TableCell<Map, Integer> cell = new TableCell<Map, Integer>() {
+                    @Override
+                    public void updateItem(Integer numer, boolean empty) {
+                        super.updateItem(numer, empty);
+                        if (empty) {
+                            setText(null);
+                        } else {
+                            setText(String.valueOf(numer));
                         }
-                    };
-                }
-            };
+                    }
+                };
+                cell.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if (event.getClickCount() > 1) {
+                            Swapper swapper = null;
+                            try {
+                                swapper = new Swapper(true, null, user, null, null, "admin/liniaInfoFXML", "Linia");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                return;
+                            }
+                            ((aLiniaInfoFXController) swapper.getController()).myInitialize(null);
+                        }
+                    }
+                });
+                return cell;
+            }
+        });
+        tc_Kierowca.setCellFactory(new Callback<TableColumn<Map, String>, TableCell<Map, String>>() {
+            @Override
+            public TableCell<Map, String> call(TableColumn<Map, String> mapStringTableColumn) {
+                final TableCell<Map, String> cell = new TableCell<Map, String>() {
+                    @Override
+                    public void updateItem(String numer, boolean empty) {
+                        super.updateItem(numer, empty);
+                        if (empty) {
+                            setText(null);
+                        } else {
+                            setText(numer);
+                        }
+                    }
+                };
+                cell.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if (event.getClickCount() > 1) {
+                            Swapper swapper = null;
+                            try {
+                                swapper = new Swapper(true, null, user, null, null, "admin/kierowcaInfoFXML", "Kierowca");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                return;
+                            }
+                            ((aLiniaInfoFXController) swapper.getController()).myInitialize(null);
+                        }
+                    }
+                });
+                return cell;
+            }
+        });
+        tc_Pojazd.setCellFactory(new Callback<TableColumn<Map, String>, TableCell<Map, String>>() {
+            @Override
+            public TableCell<Map, String> call(TableColumn<Map, String> mapStringTableColumn) {
+                final TableCell<Map, String> cell = new TableCell<Map, String>() {
+                    @Override
+                    public void updateItem(String numer, boolean empty) {
+                        super.updateItem(numer, empty);
+                        if (empty) {
+                            setText(null);
+                        } else {
+                            setText(numer);
+                        }
+                    }
+                };
+                cell.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if (event.getClickCount() > 1) {
+                            Swapper swapper = null;
+                            try {
+                                swapper = new Swapper(true, null, user, null, null, "admin/pojazdInfoFXML", "Pojazd");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                return;
+                            }
+                            ((aLiniaInfoFXController) swapper.getController()).myInitialize(null);
+                        }
+                    }
+                });
+                return cell;
+            }
         });
     }
 
@@ -261,30 +346,6 @@ public class aPrzejazdyFXController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
-            }
-        }
-    }
-
-    private void swapForMoreInfo(MouseEvent event, Object record, String column) {
-        if (event.getEventType() == MouseEvent.MOUSE_PRESSED) {
-            if(event.getClickCount() == 2) {
-                try {
-                    Swapper swapper = null;
-                    switch (column) {
-                        case "Linia nr":
-                            swapper = new Swapper(true, null, user, null, null, "admin/liniaInfoFXML", column);
-                            ((aLiniaInfoFXController) swapper.getController()).myInitialize(record);
-                        case "Kierowca":
-                            swapper = new Swapper(true, null, user, null, null, "admin/kierowcaInfoFXML", column);
-                            ((aKierowcaInfoFXController) swapper.getController()).myInitialize(record);
-                        case "Pojazd":
-                            swapper = new Swapper(true, null, user, null, null, "admin/pojazdInfoFXML", column);
-                            ((aPojazdInfoFXController) swapper.getController()).myInitialize(record);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return;
-                }
             }
         }
     }
