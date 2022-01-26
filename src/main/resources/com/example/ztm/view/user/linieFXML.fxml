@@ -93,9 +93,9 @@
          <children>
             <TableView fx:id="tv_Table" onMousePressed="#swapTrasa" prefHeight="286.0" prefWidth="450.0" GridPane.rowIndex="1">
                <columns>
-                  <TableColumn prefWidth="43.20001220703125" text="Nr" />
-                  <TableColumn prefWidth="250.4000244140625" text="Godzina rozpoczęcia" />
-                  <TableColumn prefWidth="265.5999755859375" text="Godzina zakończenia" />
+                  <TableColumn fx:id="tc_Nr" prefWidth="43.20001220703125" text="Nr" />
+                  <TableColumn fx:id="tc_Godzina_rozp" prefWidth="250.4000244140625" text="Godzina rozpoczęcia" />
+                  <TableColumn fx:id="tc_Godzina_zak" prefWidth="265.5999755859375" text="Godzina zakończenia" />
                </columns>
             </TableView>
             <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="560.0" spacing="10.0">

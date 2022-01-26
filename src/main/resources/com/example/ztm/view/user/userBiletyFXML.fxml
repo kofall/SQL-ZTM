@@ -123,10 +123,10 @@
          <children>
             <TableView fx:id="tv_Table" prefHeight="286.0" prefWidth="450.0" GridPane.rowIndex="1">
                <columns>
-                  <TableColumn prefWidth="187.20001220703125" text="Nazwa" />
-                  <TableColumn prefWidth="179.20001220703125" text="Czas obowiązywania" />
-                  <TableColumn minWidth="0.0" prefWidth="66.39996337890625" text="Strefa" />
-                  <TableColumn prefWidth="129.59991455078125" text="Cena" />
+                  <TableColumn fx:id="tc_Nazwa" prefWidth="187.20001220703125" text="Nazwa" />
+                  <TableColumn fx:id="tc_CzasObowiazywania" prefWidth="179.20001220703125" text="Czas obowiązywania" />
+                  <TableColumn fx:id="tc_Strefa" minWidth="0.0" prefWidth="66.39996337890625" text="Strefa" />
+                  <TableColumn fx:id="tc_Cena" prefWidth="129.59991455078125" text="Cena" />
                </columns>
             </TableView>
             <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="560.0" spacing="10.0">
