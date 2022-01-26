@@ -72,6 +72,7 @@ public class uSelectReliefCountFXController implements Initializable {
         tc_WybraneNazwa.setCellValueFactory(new PropertyValueFactory<Wybrane, String>("ulgi_nazwa"));
         tc_WybraneIlosc.setCellValueFactory(new PropertyValueFactory<Wybrane, String>("ilosc"));
         tc_WybraneKoszt.setCellValueFactory(new PropertyValueFactory<Wybrane, String>("koszt"));
+//        tc_WybraneIlosc
     }
 
     public void initTables() {
