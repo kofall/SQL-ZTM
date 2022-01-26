@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -8,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ztm.aKierowcaInfoFXController">
+<AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ztm.aKierowcaInfoFXController">
    <children>
       <VBox layoutX="20.0" layoutY="20.0" prefHeight="160.0" prefWidth="360.0" spacing="10.0">
          <children>
@@ -36,7 +41,7 @@
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font></Label>
-                  <Label fx:id="lb_Nazwisko" text="XXX" />
+                  <Label fx:id="lb_Surname" text="XXX" />
                </children>
             </VBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0" spacing="10.0">

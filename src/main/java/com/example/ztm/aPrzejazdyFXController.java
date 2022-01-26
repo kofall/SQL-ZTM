@@ -99,7 +99,7 @@ public class aPrzejazdyFXController implements Initializable {
                                 e.printStackTrace();
                                 return;
                             }
-                            ((aLiniaInfoFXController) swapper.getController()).myInitialize(null);
+                            ((aLiniaInfoFXController) swapper.getController()).myInitialize(tv_Table.getSelectionModel().getSelectedItems().get(0));
                         }
                     }
                 });
@@ -131,7 +131,7 @@ public class aPrzejazdyFXController implements Initializable {
                                 e.printStackTrace();
                                 return;
                             }
-                            ((aLiniaInfoFXController) swapper.getController()).myInitialize(null);
+                            ((aKierowcaInfoFXController) swapper.getController()).myInitialize(tv_Table.getSelectionModel().getSelectedItems().get(0));
                         }
                     }
                 });
@@ -163,7 +163,8 @@ public class aPrzejazdyFXController implements Initializable {
                                 e.printStackTrace();
                                 return;
                             }
-                            ((aLiniaInfoFXController) swapper.getController()).myInitialize(null);
+
+                            ((aPojazdInfoFXController) swapper.getController()).myInitialize(tv_Table.getSelectionModel().getSelectedItems().get(0));
                         }
                     }
                 });
