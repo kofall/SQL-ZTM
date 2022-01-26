@@ -330,7 +330,7 @@ public class uUserHistoriaFXController implements Initializable {
                         alert.showAndWait();
                     } else {
                         Map<String, Object> record = selectedItems.get(0);
-                        Swapper swapper = new Swapper(false, stage, user, null, null, "user/userHistoriaBiletInfoFXML", null);
+                        Swapper swapper = new Swapper(true, stage, user, null, null, "user/userHistoriaBiletInfoFXML", null);
                         ((uUserHistoriaBiletInfoFXController) swapper.getController()).myInitialize(record);
                     }
                 } catch (IOException e) {

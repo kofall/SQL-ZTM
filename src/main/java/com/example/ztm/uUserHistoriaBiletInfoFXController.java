@@ -91,8 +91,8 @@ public class uUserHistoriaBiletInfoFXController implements Initializable {
                         lb_Skasowany.setText("Tak");
                     else
                         lb_Skasowany.setText("Nie");
-                    lb_PrzystanekStart.setText(rs.getString(7));
-                    lb_PrzystanekEnd.setText(rs.getString(6));
+                    lb_PrzystanekStart.setText(rs.getString(2));
+                    lb_PrzystanekEnd.setText(rs.getString(3));
                     lb_Strefa.setText(rs.getString(10));
                     lb_Ulga.setText(rs.getString(5));
 
