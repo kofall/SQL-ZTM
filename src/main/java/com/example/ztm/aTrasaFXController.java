@@ -267,7 +267,7 @@ public class aTrasaFXController implements Initializable {
                     }else {
                         Map<String,Object> record = selectedItems.get(0);
                         Swapper swapper = new Swapper(false, stage, user, null, null, "admin/trasaGodzinyFXML", null);
-                        ((aTrasaFXController) swapper.getController()).myInitialize(record);
+                        ((aTrasaGodzinyFXController) swapper.getController()).myInitialize(record,nr_linii);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

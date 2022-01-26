@@ -38,6 +38,8 @@ public class sSureFXController implements Initializable {
     public void setStage(Stage stage) { this.stage = stage; }
     public void setUser(User user) { this.user = user; }
     boolean przejazdy = false;
+    boolean godz = false;
+    private Integer id_szt;
     /**
      * Initializes the controller class.
      */
@@ -60,6 +62,13 @@ public class sSureFXController implements Initializable {
         przejazdy=true;
         l_message.setText("Czy na pewno chcesz usunąć ten przejazd?");
     }
+    public void myInitialize(Object controller, Map<String,Object> record,Integer id) {
+        prevController = controller;
+        recordV = record;
+        godz=true;
+        id_szt = id;
+        l_message.setText("Czy na pewno chcesz usunąć tą godzinę?");
+    }
 
     private void refreshTables() {
         try {
@@ -76,7 +85,7 @@ public class sSureFXController implements Initializable {
     @FXML
     private void deleteANDclose(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
-            if(!przejazdy){
+            if(!przejazdy && !godz){
                 Connection conn = null;
                 String connectionString =
                         "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/"+
@@ -124,7 +133,7 @@ public class sSureFXController implements Initializable {
                 }
                 refreshTables();
                 close(event);
-            }else{
+            }else if(przejazdy &&!godz){
                 Connection conn = null;
                 String connectionString =
                         "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/"+
@@ -143,6 +152,52 @@ public class sSureFXController implements Initializable {
                         pstmt1.setString(3, (String) recordV.get("kierowca"));
                         pstmt1.setString(4, (String) recordV.get("pojazd"));
                         pstmt1.setInt(5, (Integer) recordV.get("linia_nr"));
+                        pstmt1.execute();
+
+
+                    }catch (SQLException ex) {
+                        System.out.println(ex.getMessage());
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Delete Error");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Nie udało się usunąć rekordu!");
+                        alert.showAndWait();
+
+                    }
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Connection Error");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Failed to disconnect from the database!");
+                        alert.showAndWait();
+                    }
+                } catch (SQLException ex) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Connection Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Failed to connect to the database!");
+                    alert.showAndWait();
+                }
+                refreshTables();
+                close(event);
+            }else if(godz && !przejazdy){
+
+                Connection conn = null;
+                String connectionString =
+                        "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/"+
+                                "dblab02_students.cs.put.poznan.pl";
+                Properties connectionProps = new Properties();
+                connectionProps.put("user", "inf145326");
+                connectionProps.put("password", "inf145326");
+                try {
+                    conn = DriverManager.getConnection(connectionString,
+                            connectionProps);
+                    String sql_statement = "DELETE FROM godziny_odjazdow WHERE ID_PRZYSTANKU_W_TRASIE_SZT=? AND godzina_odjazdu = ?";
+                    try (PreparedStatement pstmt1 = conn.prepareStatement(sql_statement);){
+                        pstmt1.setInt(1,id_szt);
+                        pstmt1.setTimestamp(2,(Timestamp) recordV.get("time"));
                         pstmt1.execute();
 
 
