@@ -230,17 +230,17 @@ public class aInsertUpdatePojazdyFXController implements Initializable {
 
                         cstmt1.execute();
                         int success = cstmt1.getInt(1);
-                        if (success == 0) {
+                        if (success == 1) {
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("Modify Information");
                             alert.setHeaderText(null);
-                            alert.setContentText("Udane dodanie pojazdu!");
+                            alert.setContentText("Udana modyfikacja pojazdu!");
                             alert.showAndWait();
-                        } else if (success == 1) {
+                        } else if (success == 0) {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setTitle("Modify Error");
                             alert.setHeaderText(null);
-                            alert.setContentText("Istnieje pojazd o takim numerze seryjnym!");
+                            alert.setContentText("Nie istnieje pojazd o takim numerze seryjnym!");
                             alert.showAndWait();
 
                         } else if (success == 2) {

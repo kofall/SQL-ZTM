@@ -42,6 +42,7 @@ public class aTrasaFXController implements Initializable {
     @FXML
     private TableColumn<Map, String> tc_na_zadanie;
 
+    Map<String,Object> record = null;
     private Integer nr_linii;
     private Stage stage = null;
     private User user = null;
@@ -118,6 +119,7 @@ public class aTrasaFXController implements Initializable {
     }
 
     public void myInitialize(Map<String,Object> record) {
+        this.record = record;
         nr_linii = (Integer) record.get("nr");
         lb_LineNumber.setText(nr_linii.toString());
         initTables();
@@ -265,9 +267,9 @@ public class aTrasaFXController implements Initializable {
                         alert.setContentText("Trasa nie została wybrana!");
                         alert.showAndWait();
                     }else {
-                        Map<String,Object> record = selectedItems.get(0);
+                        Map<String,Object> recordFound = selectedItems.get(0);
                         Swapper swapper = new Swapper(false, stage, user, null, null, "admin/trasaGodzinyFXML", null);
-                        ((aTrasaGodzinyFXController) swapper.getController()).myInitialize(record,nr_linii);
+                        ((aTrasaGodzinyFXController) swapper.getController()).myInitialize(recordFound, record, nr_linii);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

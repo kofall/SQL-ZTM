@@ -50,7 +50,7 @@ public class aInsertUpdateUlgiFXController implements Initializable {
         prevController = controller;
         if(record!=null){
             tf_Name.setText((String) record.get("nazwa"));
-            tf_Percent.setText((String) record.get("wartosc_procentowa"));
+            tf_Percent.setText(String.valueOf(record.get("wartosc_procentowa")));
         }
     }
 

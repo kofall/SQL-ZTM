@@ -44,6 +44,7 @@ public class aTrasaGodzinyFXController implements Initializable {
     private String przystanek;
     private Integer id_szt;
 
+    Map<String,Object> record = null;
     private Stage stage = null;
     private User user = null;
     private ObservableList<Map<String, Object>> table_items = FXCollections.<Map<String, Object>>observableArrayList();
@@ -108,10 +109,11 @@ public class aTrasaGodzinyFXController implements Initializable {
         }
     }
 
-    public void myInitialize(Map<String,Object> record, Integer nr) {
-        przystanek = (String) record.get("nazwa");
+    public void myInitialize(Map<String,Object> recordFound, Map<String,Object> record, Integer nr) {
+        this.record = record;
+        przystanek = (String) recordFound.get("nazwa");
         nr_linii = nr;
-        id_szt = (Integer) record.get("id");
+        id_szt = (Integer) recordFound.get("id");
         lb_LineNumber.setText(nr_linii.toString());
         lb_Przystanek.setText(przystanek);
         initTables();
@@ -243,7 +245,8 @@ public class aTrasaGodzinyFXController implements Initializable {
     private void back(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             try {
-                new Swapper(false, stage, user, null, null, "admin/trasaFXML", null);
+                Swapper swapper = new Swapper(false, stage, user, null, null, "admin/trasaFXML", null);
+                ((aTrasaFXController) swapper.getController()).myInitialize(record);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;

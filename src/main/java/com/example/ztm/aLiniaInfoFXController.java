@@ -63,6 +63,7 @@ public class aLiniaInfoFXController implements Initializable {
     }
 
     public void initTables() {
+        table_items.clear();
         Connection conn = null;
         String connectionString =
                 "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/"+
@@ -74,7 +75,7 @@ public class aLiniaInfoFXController implements Initializable {
             conn = DriverManager.getConnection(connectionString,
                     connectionProps);
             try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT nr_w_trasie, nazwa, na_zadanie,id_przystanku_w_trasie_szt FROM przystanek_w_trasie INNER JOIN przystanek ON przystanek.nazwa = przystanek_w_trasie.przystanek_nazwa WHERE linia_nr_lini =?"); ){
-                pstmt1.setInt(1,nr_lini);
+                pstmt1.setInt(1, Integer.parseInt(lb_Number.getText()));
                 ResultSet rs = pstmt1.executeQuery();
                 while(rs.next()){
                     Map<String, Object> item = new HashMap<>();
@@ -167,6 +168,7 @@ public class aLiniaInfoFXController implements Initializable {
             alert.setContentText("Failed to connect to the database!");
             alert.showAndWait();
         }
+        initTables();
     }
 
     @FXML
