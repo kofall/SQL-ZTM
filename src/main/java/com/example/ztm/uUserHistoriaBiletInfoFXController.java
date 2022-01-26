@@ -6,6 +6,7 @@ package com.example.ztm;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -43,6 +44,7 @@ public class uUserHistoriaBiletInfoFXController implements Initializable {
     @FXML
     private Label lb_Cena;
 
+    private String serial = null;
     private Stage stage = null;
     private User user = null;
 
@@ -63,10 +65,7 @@ public class uUserHistoriaBiletInfoFXController implements Initializable {
          */
     }
 
-    public void myInitialize(Object record) {
-        /*
-        INITIALIZE LABELS VALUES
-         */
+    public void myInitialize(Map<String, Object> record) {
     }
 
     @FXML

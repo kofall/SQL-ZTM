@@ -122,10 +122,10 @@
          <children>
             <TableView fx:id="tv_Table" onMousePressed="#swapForMoreInfo" prefHeight="286.0" prefWidth="450.0" GridPane.rowIndex="1">
                <columns>
-                  <TableColumn prefWidth="32.0" text="ID" />
-                  <TableColumn prefWidth="116.0" text="Skasowany" />
-                  <TableColumn minWidth="0.0" prefWidth="110.39996337890625" text="Data" />
-                  <TableColumn prefWidth="306.4000244140625" text="Opis" />
+                  <TableColumn fx:id="tc_Id" prefWidth="32.0" text="ID" />
+                  <TableColumn fx:id="tc_Skasowany" prefWidth="116.0" text="Skasowany" />
+                  <TableColumn fx:id="tc_Data" minWidth="0.0" prefWidth="110.39996337890625" text="Data" />
+                  <TableColumn fx:id="tc_Opis" prefWidth="306.4000244140625" text="Opis" />
                </columns>
             </TableView>
             <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="560.0" spacing="10.0">

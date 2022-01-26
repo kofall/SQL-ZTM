@@ -35,19 +35,18 @@ public class aTrasaFXController implements Initializable {
     private TextField tf_Pattern;
     @FXML
     private Label lb_LineNumber;
-
     @FXML
     private TableColumn<Map, String> tc_Nr_w_trasie;
-
     @FXML
     private TableColumn<Map, String> tc_Nazwa;
-
     @FXML
     private TableColumn<Map, String> tc_na_zadanie;
+
     private Integer nr_linii;
     private Stage stage = null;
     private User user = null;
     private ObservableList<Map<String, Object>> table_items = FXCollections.<Map<String, Object>>observableArrayList();
+
     public void setStage(Stage stage) { this.stage = stage; }
     public void setUser(User user) { this.user = user; }
 
@@ -269,7 +268,6 @@ public class aTrasaFXController implements Initializable {
                         Swapper swapper = new Swapper(false, stage, user, null, null, "admin/trasaGodzinyFXML", null);
                         ((aTrasaFXController) swapper.getController()).myInitialize(record);
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                     return;

@@ -6,13 +6,21 @@ package com.example.ztm;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
-import com.example.ztm.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -25,12 +33,22 @@ import javafx.stage.Stage;
 public class uUserHistoriaFXController implements Initializable {
 
     @FXML
-    private TableView<?> tv_Table;
+    private TableView<Map<String, Object>> tv_Table;
     @FXML
     private TextField tf_Pattern;
+    @FXML
+    private TableColumn<Map, String> tc_Id;
+    @FXML
+    private TableColumn<Map, String> tc_Skasowany;
+    @FXML
+    private TableColumn<Map, String> tc_Data;
+    @FXML
+    private TableColumn<Map, String> tc_Opis;
+
 
     private Stage stage = null;
     private User user = null;
+    private ObservableList<Map<String, Object>> table_items = FXCollections.<Map<String, Object>>observableArrayList();
 
     public void setStage(Stage stage) { this.stage = stage; }
     public void setUser(User user) { this.user = user; }
@@ -40,21 +58,123 @@ public class uUserHistoriaFXController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        tc_Id.setCellValueFactory(new MapValueFactory<>("id"));
+        tc_Skasowany.setCellValueFactory(new MapValueFactory<>("skasowany"));
+        tc_Data.setCellValueFactory(new MapValueFactory<>("data"));
+        tc_Opis.setCellValueFactory(new MapValueFactory<>("opis"));
     }
 
     public void initTables() {
-        /*
-        HERE INITIALIZE TABLE VALUES
-         */
+        table_items.clear();
+        Connection conn = null;
+        String connectionString =
+                "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/" +
+                        "dblab02_students.cs.put.poznan.pl";
+        Properties connectionProps = new Properties();
+        connectionProps.put("user", "inf145326");
+        connectionProps.put("password", "inf145326");
+        try {
+            conn = DriverManager.getConnection(connectionString,
+                    connectionProps);
+            try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM wpis_historii INNER JOIN bilet ON wpis_historii.bilet_id_biletu = bilet.id_biletu");) {
+                ResultSet rs = pstmt1.executeQuery();
+                while (rs.next()) {
+                    Map<String, Object> item = new HashMap<>();
+                    item.put("id", rs.getInt(1));
+                    String opis = rs.getString(8);
+                    if(opis != null)
+                        item.put("skasowany", "Tak");
+                    else
+                        item.put("skasowany", "Nie");
+                    item.put("data", rs.getString(2));
+                    item.put("opis", rs.getString(3));
+                    table_items.add(item);
+                }
+                rs.close();
+                tv_Table.setItems(table_items);
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Loading Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to execute query!");
+                alert.showAndWait();
+            }
+            try {
+                conn.close();
+            } catch (SQLException ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Connection Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to disconnect from the database!");
+                alert.showAndWait();
+            }
+        } catch (SQLException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Connection Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Failed to connect to the database!");
+            alert.showAndWait();
+        }
     }
 
     @FXML
     private void find(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
-            /*
-            FIND RECORDS (ObservableList)
-             */
+            String pattern = tf_Pattern.getText();
+            Connection conn = null;
+            String connectionString =
+                    "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/" +
+                            "dblab02_students.cs.put.poznan.pl";
+            Properties connectionProps = new Properties();
+            connectionProps.put("user", "inf145326");
+            connectionProps.put("password", "inf145326");
+            try {
+                conn = DriverManager.getConnection(connectionString,
+                        connectionProps);
+                try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM wpis_historii INNER JOIN " +
+                        "bilet ON wpis_historii.bilet_id_biletu = bilet.id_biletu WHERE numer_wpisu=?");) {
+                    pstmt1.setString(1, pattern);
+                    ResultSet rs = pstmt1.executeQuery();
+                    table_items.clear();
+                    while (rs.next()) {
+                        Map<String, Object> item = new HashMap<>();
+                        item.put("id", rs.getInt(1));
+                        String opis = rs.getString(8);
+                        if(opis != null)
+                            item.put("skasowany", "Tak");
+                        else
+                            item.put("skasowany", "Nie");
+                        item.put("data", rs.getString(2));
+                        item.put("opis", rs.getString(3));
+                        table_items.add(item);
+                    }
+                    rs.close();
+                    tv_Table.setItems(table_items);
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Loading Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Failed to execute query!");
+                    alert.showAndWait();
+                }
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Connection Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Failed to disconnect from the database!");
+                    alert.showAndWait();
+                }
+            } catch (SQLException ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Connection Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to connect to the database!");
+                alert.showAndWait();
+            }
         }
     }
 
@@ -117,16 +237,21 @@ public class uUserHistoriaFXController implements Initializable {
 
     @FXML
     private void swapForMoreInfo(MouseEvent event) {
-        if(event.getEventType() == MouseEvent.MOUSE_PRESSED) {
-            if(event.getClickCount() == 2) {
+        if (event.getEventType() == MouseEvent.MOUSE_PRESSED) {
+            if (event.getClickCount() == 2) {
                 try {
-                    /*
-                    CHECK IF THE RECORD IS SELECTED
-                     */
-                    Swapper swapper = new Swapper(false, stage, user, null, null, "user/userHistoriaBiletInfoFXML", null);
-                    /*
-                    do dokończenia
-                     */
+                    ObservableList<Map<String, Object>> selectedItems = tv_Table.getSelectionModel().getSelectedItems();
+                    if (selectedItems.isEmpty()) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Select Error");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Bilet nie został wybrany!");
+                        alert.showAndWait();
+                    } else {
+                        Map<String, Object> record = selectedItems.get(0);
+                        Swapper swapper = new Swapper(false, stage, user, null, null, "user/userHistoriaBiletInfoFXML", null);
+                        ((uUserHistoriaBiletInfoFXController) swapper.getController()).myInitialize(record);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                     return;
@@ -134,6 +259,7 @@ public class uUserHistoriaFXController implements Initializable {
             }
         }
     }
+
 
     @FXML
     private void back(MouseEvent event) {

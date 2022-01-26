@@ -63,9 +63,9 @@
          <children>
             <TableView fx:id="tv_Table" onMousePressed="#swapGodziny" prefHeight="286.0" prefWidth="450.0" GridPane.rowIndex="1">
                <columns>
-                  <TableColumn prefWidth="82.39996337890625" text="Nr w trasie" />
-                  <TableColumn prefWidth="360.7999267578125" text="Nazwa przystanku" />
-                  <TableColumn prefWidth="118.40008544921875" text="Na żądanie" />
+                  <TableColumn fx:id="tc_Nr_w_trasie" prefWidth="82.39996337890625" text="Nr w trasie" />
+                  <TableColumn fx:id="tc_Nazwa" prefWidth="360.7999267578125" text="Nazwa przystanku" />
+                  <TableColumn fx:id="tc_na_zadanie" prefWidth="118.40008544921875" text="Na żądanie" />
                </columns>
             </TableView>
             <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="560.0" spacing="10.0">

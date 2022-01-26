@@ -38,9 +38,9 @@ public class aUlgiFXController implements Initializable {
     private TextField tf_Pattern;
     @FXML
     private TableColumn<Map, String> tc_Nazwa;
-
     @FXML
     private TableColumn<Map, String> tc_Wartosc_procentowa;
+
     private Stage stage = null;
     private User user = null;
     private ObservableList<Map<String, Object>> table_items = FXCollections.<Map<String, Object>>observableArrayList();

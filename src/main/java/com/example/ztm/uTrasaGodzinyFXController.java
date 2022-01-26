@@ -6,6 +6,7 @@ package com.example.ztm;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -36,6 +37,7 @@ public class uTrasaGodzinyFXController implements Initializable {
     private Stage stage = null;
     private User user = null;
     private String backFXML = null;
+    private Map<String, Object> record = null;
 
     public void setStage(Stage stage) { this.stage = stage; }
     public void setUser(User user) { this.user = user; }
@@ -54,8 +56,9 @@ public class uTrasaGodzinyFXController implements Initializable {
          */
     }
 
-    public void myInitialize(Object record, String backFXML) {
+    public void myInitialize(Map<String, Object> record, String backFXML) {
         this.backFXML = backFXML;
+        this.record = record;
         /*
         SET LineNumber LABEL
          */
@@ -75,7 +78,7 @@ public class uTrasaGodzinyFXController implements Initializable {
         if(event.getButton() == MouseButton.PRIMARY) {
             try {
                 Swapper swapper = new Swapper(false, stage, user, null, null, "user/trasaFXML", null);
-                ((uTrasaFXController) swapper.getController()).myInitialize(null/*RECORD*/, backFXML);
+                ((uTrasaFXController) swapper.getController()).myInitialize(record, backFXML);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
