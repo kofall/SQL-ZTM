@@ -95,8 +95,8 @@ public class uUserHistoriaBiletInfoFXController implements Initializable {
                     lb_PrzystanekEnd.setText(rs.getString(6));
                     lb_Strefa.setText(rs.getString(10));
                     lb_Ulga.setText(rs.getString(5));
-                    lb_Procent.setText(rs.getString(13));
-                    lb_Cena.setText(String.valueOf(rs.getFloat(11)));
+
+                    lb_Cena.setText(String.valueOf(rs.getFloat(11)*rs.getFloat(13)/100));
                 }
                 rs.close();
 
