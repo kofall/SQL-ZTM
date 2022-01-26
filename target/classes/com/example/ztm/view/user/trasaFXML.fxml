@@ -52,7 +52,7 @@
             </Button>
          </children>
       </VBox>
-      <GridPane layoutX="220.0" layoutY="95.0" prefHeight="385.0" prefWidth="560.0">
+      <GridPane layoutX="220.0" layoutY="110.0" prefHeight="370.0" prefWidth="560.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
          </columnConstraints>
@@ -61,7 +61,7 @@
             <RowConstraints maxHeight="384.00001373291013" minHeight="10.0" prefHeight="381.60001983642576" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <TableView fx:id="tv_Table" prefHeight="286.0" prefWidth="450.0" GridPane.rowIndex="1">
+            <TableView fx:id="tv_Table" onMousePressed="#swapGodziny" prefHeight="286.0" prefWidth="450.0" GridPane.rowIndex="1">
                <columns>
                   <TableColumn prefWidth="82.39996337890625" text="Nr w trasie" />
                   <TableColumn prefWidth="360.7999267578125" text="Nazwa przystanku" />
@@ -84,7 +84,7 @@
             </HBox>
          </children>
       </GridPane>
-      <Pane layoutX="200.0" layoutY="40.0" prefHeight="35.0" prefWidth="255.0" style="-fx-background-color: #36A848;">
+      <Pane layoutX="200.0" layoutY="20.0" prefHeight="35.0" prefWidth="365.0" style="-fx-background-color: #36A848;">
          <children>
             <VBox prefHeight="35.0" prefWidth="400.0">
                <children>
@@ -99,6 +99,26 @@
                            </font>
                         </Label>
                         <Label fx:id="lb_LineNumber" text="brak..." textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+      <Pane layoutX="200.0" layoutY="55.0" prefHeight="35.0" prefWidth="365.0" style="-fx-background-color: #36A848;">
+         <children>
+            <VBox prefHeight="35.0" prefWidth="400.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="400.0" spacing="10.0">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <children>
+                        <Label text="Kliknij dwukrotnie na rekord aby wyświetlić więcej opcji." textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>

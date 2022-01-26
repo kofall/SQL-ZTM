@@ -87,7 +87,8 @@ public class aAdminFXController implements Initializable {
     private void swapPrzejazdy(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             try {
-                new Swapper(false, stage, user, null, null, "admin/przejazdyFXML", null);
+                Swapper swapper = new Swapper(false, stage, user, null, null, "admin/przejazdyFXML", null);
+                ((aPrzejazdyFXController) swapper.getController()).myInitialize();
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
