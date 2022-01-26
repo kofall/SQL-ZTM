@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -65,12 +66,12 @@ public class uSelectReliefCountFXController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        lb_Price.setText("0.00 zł");
         tc_UlgiNazwa.setCellValueFactory(new MapValueFactory<>("ulgi_nazwa"));
         tc_UlgiZnizka.setCellValueFactory(new MapValueFactory<>("ulgi_znizka"));
-        tc_WybraneNazwa.setCellValueFactory(new MapValueFactory<>("wybrane_nazwa"));
-        tc_WybraneIlosc.setCellValueFactory(new MapValueFactory<>("wybrane_ilosc"));
-        tc_WybraneKoszt.setCellValueFactory(new MapValueFactory<>("wybrane_koszt"));
-        tv_TableWybraneUlgi.getColumns().addAll(tc_WybraneNazwa, tc_WybraneIlosc, tc_WybraneKoszt);
+        tc_WybraneNazwa.setCellValueFactory(new PropertyValueFactory<Wybrane, String>("ulgi_nazwa"));
+        tc_WybraneIlosc.setCellValueFactory(new PropertyValueFactory<Wybrane, String>("ilosc"));
+        tc_WybraneKoszt.setCellValueFactory(new PropertyValueFactory<Wybrane, String>("koszt"));
     }
 
     public void initTables() {
@@ -128,7 +129,7 @@ public class uSelectReliefCountFXController implements Initializable {
 
     public void myInitialize(Map<String, Object> record) {
         lb_Name.setText((String) record.get("bilety_nazwa"));
-        lb_Price.setText((String) record.get("bilety_cena"));
+        lb_Price.setText(String.valueOf((Float) record.get("bilety_cena")));
     }
 
     @FXML
@@ -202,14 +203,26 @@ public class uSelectReliefCountFXController implements Initializable {
                     Map<String, Object> record = selectedItems.get(0);
                     Wybrane wybrany = new Wybrane(
                             lb_Name.getText(),
-                            (String) ((Map<String,Object>) record).get("ulgi_nazwa"),
+                            (String) (record).get("ulgi_nazwa"),
                             "1",
-                            lb_Price.getText()
+                            lb_Price.getText(),
+                            (String) (record).get("ulgi_znizka")
                     );
                     tableWybrane_items.add(wybrany);
+                    updateKoszt();
                 }
             }
         }
+    }
+
+    private void updateKoszt() {
+        float totalPrice = 0;
+        for(Wybrane record : tableWybrane_items) {
+            float curr = Integer.valueOf(record.getIlosc().getText()) * (Float.valueOf(lb_Price.getText()) * (1 - record.getZnizka()));
+            totalPrice += curr;
+            record.setKoszt(curr);
+        }
+        lb_TotalCost.setText(String.valueOf(totalPrice) + " zł");
     }
 
     @FXML

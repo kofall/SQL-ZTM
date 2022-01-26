@@ -56,7 +56,7 @@ public class User {
             Map<String, Object> item = new HashMap<>();
             item.put("wybrane_nazwa", wybrany.getRodzaje_biletow_nazwa());
             item.put("wybrane_ulga", wybrany.getUlgi_nazwa());
-            item.put("wybrane_ilosc", wybrany.getIlosc());
+            item.put("wybrane_ilosc", wybrany.getIlosc().getText());
             item.put("wybrane_koszt", wybrany.getKoszt());
             koszyk_items.add(item);
         }

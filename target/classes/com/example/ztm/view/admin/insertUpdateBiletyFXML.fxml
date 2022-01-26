@@ -25,7 +25,7 @@
             <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">
                <children>
                   <Label text="Czas obowiązywania" />
-                  <TextField fx:id="tf_Time" promptText="format -&gt; dd hh:mm:ss" />
+                  <TextField fx:id="tf_Time" promptText="Czas obowiązywania" />
                </children>
             </VBox>
             <VBox prefHeight="50.0" prefWidth="250.0" spacing="1.0">

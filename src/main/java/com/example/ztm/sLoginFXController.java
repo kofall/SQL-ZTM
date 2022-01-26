@@ -72,7 +72,8 @@ public class sLoginFXController implements Initializable {
                 conn = DriverManager.getConnection(connectionString,
                         connectionProps);
                 try (CallableStatement cstmt1 = conn.prepareCall("{? = call zalogujUzytkownika(?,?)}");
-                     CallableStatement cstmt2 = conn.prepareCall("{? = call getTypUzytkownika(?)}");){
+                     CallableStatement cstmt2 = conn.prepareCall("{? = call getTypUzytkownika(?)}");
+                     PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM konto WHERE login=?");){
 
                     cstmt1.registerOutParameter(1,Types.INTEGER);
                     cstmt1.setString(2, tf_Username.getText());
@@ -80,7 +81,10 @@ public class sLoginFXController implements Initializable {
                     cstmt1.execute();
                     int success = cstmt1.getInt(1);
                     if(success == 1){
-                        user = new User(tf_Username.getText(),tf_Password.getText());
+                        pstmt1.setString(1, tf_Username.getText());
+                        ResultSet rs = pstmt1.executeQuery();
+                        rs.next();
+                        user = new User(rs.getInt(1), tf_Username.getText(),tf_Password.getText());
                         cstmt2.registerOutParameter(1,Types.CHAR);
                         cstmt2.setString(2,tf_Username.getText());
                         cstmt2.execute();
