@@ -49,7 +49,7 @@ public class uUserHistoriaBiletInfoFXController implements Initializable {
 
     private Stage stage = null;
     private User user = null;
-    private String idBiletu;
+    private Integer idBiletu;
 
     public void setStage(Stage stage) { this.stage = stage; }
     public void setUser(User user) { this.user = user; }
@@ -69,7 +69,7 @@ public class uUserHistoriaBiletInfoFXController implements Initializable {
     }
 
     public void myInitialize(Map<String, Object> record) {
-        idBiletu = (String) ((Map<String,Object>) record).get("id");
+        idBiletu = (Integer) (record).get("id");
         Connection conn = null;
         String connectionString =
                 "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/"+
@@ -80,8 +80,8 @@ public class uUserHistoriaBiletInfoFXController implements Initializable {
         try {
             conn = DriverManager.getConnection(connectionString,
                     connectionProps);
-            try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM bilet INNER JOIN rodzaje_biletow ON bilet.rodzaje_biletow_nazwa = rodzaje_biletow.nazwa WHERE id_biletu=?"); ){
-                pstmt1.setString(1, idBiletu);
+            try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM bilet INNER JOIN rodzaje_biletow ON bilet.rodzaje_biletow_nazwa = rodzaje_biletow.nazwa INNER JOIN ulgi ON bilet.ulgi_nazwa = ulgi.nazwa WHERE id_biletu=?"); ){
+                pstmt1.setInt(1, idBiletu);
                 ResultSet rs = pstmt1.executeQuery();
                 while(rs.next()){
                     lb_Name.setText(rs.getString(8));
@@ -96,7 +96,7 @@ public class uUserHistoriaBiletInfoFXController implements Initializable {
                     lb_Strefa.setText(rs.getString(10));
                     lb_Ulga.setText(rs.getString(5));
                     lb_Procent.setText(rs.getString(13));
-                    lb_Cena.setText(rs.getString(11));
+                    lb_Cena.setText(String.valueOf(rs.getFloat(11)));
                 }
                 rs.close();
 

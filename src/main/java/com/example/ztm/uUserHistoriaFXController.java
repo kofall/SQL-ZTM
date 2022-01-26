@@ -206,15 +206,13 @@ public class uUserHistoriaFXController implements Initializable {
                         conn = DriverManager.getConnection(connectionString,
                                 connectionProps);
                         try (
-                                PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM wpis_historii WHERE numer_wpisu=?");
+
                                 CallableStatement cstmt1 = conn.prepareCall("{? = call skasujBilet(?,?)}");
                                 ) {
-                            pstmt1.setInt(1, (Integer) record.get("id"));
-                            ResultSet rs = pstmt1.executeQuery();
-                            rs.next();
+
                             cstmt1.registerOutParameter(1, Types.INTEGER);
                             cstmt1.setInt(2, user.getIdKonta());
-                            cstmt1.setInt(3, Integer.parseInt(rs.getString(6)));
+                            cstmt1.setInt(3, (Integer)record.get("id"));
                             cstmt1.execute();
                             int success = cstmt1.getInt(1);
                             if (success == 1) {
@@ -223,6 +221,7 @@ public class uUserHistoriaFXController implements Initializable {
                                 alert.setHeaderText(null);
                                 alert.setContentText("Skasowano bilet!");
                                 alert.showAndWait();
+                                initTables();
                             } else if (success == 0) {
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("Insert Error");
