@@ -79,7 +79,8 @@ public class uUserHistoriaFXController implements Initializable {
         try {
             conn = DriverManager.getConnection(connectionString,
                     connectionProps);
-            try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM wpis_historii INNER JOIN bilet ON wpis_historii.bilet_id_biletu = bilet.id_biletu");) {
+            try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM wpis_historii INNER JOIN bilet ON wpis_historii.bilet_id_biletu = bilet.id_biletu WHERE wpis_historii.konto_id_konta=?");) {
+                pstmt1.setInt(1, user.getIdKonta());
                 ResultSet rs = pstmt1.executeQuery();
                 while (rs.next()) {
                     Map<String, Object> item = new HashMap<>();
@@ -135,8 +136,9 @@ public class uUserHistoriaFXController implements Initializable {
             try {
                 conn = DriverManager.getConnection(connectionString,
                         connectionProps);
-                try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM wpis_historii INNER JOIN bilet ON wpis_historii.bilet_id_biletu = bilet.id_biletu WHERE bilet_id_biletu=?");) {
+                try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM wpis_historii INNER JOIN bilet ON wpis_historii.bilet_id_biletu = bilet.id_biletu WHERE bilet_id_biletu=? AND wpis_historii.konto_id_konta=?");) {
                     pstmt1.setString(1, pattern);
+                    pstmt1.setInt(2, user.getIdKonta());
                     ResultSet rs = pstmt1.executeQuery();
                     table_items.clear();
                     while (rs.next()) {
