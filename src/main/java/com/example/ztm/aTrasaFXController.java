@@ -120,6 +120,7 @@ public class aTrasaFXController implements Initializable {
     public void myInitialize(Map<String,Object> record) {
         nr_linii = (Integer) record.get("nr");
         lb_LineNumber.setText(nr_linii.toString());
+        initTables();
     }
 
     @FXML
