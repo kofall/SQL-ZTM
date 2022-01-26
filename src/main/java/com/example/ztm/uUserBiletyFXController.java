@@ -172,7 +172,8 @@ public class uUserBiletyFXController implements Initializable {
     private void swapKoszyk(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             try {
-                new Swapper(false, stage, user, null, null, "user/buyTicketFXML", null);
+                Swapper swapper = new Swapper(false, stage, user, null, null, "user/buyTicketFXML", null);
+                ((uBuyTicketFXController) swapper.getController()).myInitialize(true);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;

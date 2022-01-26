@@ -129,7 +129,6 @@ public class uTrasaFXController implements Initializable {
         this.record = record;
         nr_linii = (Integer) record.get("nr");
         lb_LineNumber.setText(nr_linii.toString());
-        initTables();
     }
 
     @FXML
@@ -207,9 +206,8 @@ public class uTrasaFXController implements Initializable {
                         alert.setContentText("Przystanek nie został wybrany!");
                         alert.showAndWait();
                     } else {
-                        Map<String,Object> record = selectedItems.get(0);
                         Swapper swapper = new Swapper(false, stage, user, null, null, "user/trasaGodzinyFXML", null);
-                        ((uTrasaGodzinyFXController) swapper.getController()).myInitialize(record,this.record, backFXML,nr_linii);
+                        ((uTrasaFXController) swapper.getController()).myInitialize(record, backFXML);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

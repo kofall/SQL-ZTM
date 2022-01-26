@@ -40,22 +40,22 @@ public class uSelectReliefCountFXController implements Initializable {
     @FXML
     private TableView<Map<String, Object>> tv_TableUlgi;
     @FXML
-    private TableView<Map<String, Object>> tv_TableWybraneUlgi;
+    private TableView tv_TableWybraneUlgi;
     @FXML
     private TableColumn<Map, String> tc_UlgiNazwa;
     @FXML
     private TableColumn<Map, String> tc_UlgiZnizka;
     @FXML
-    private TableColumn<Map, String> tc_WybraneNazwa;
+    private TableColumn tc_WybraneNazwa;
     @FXML
-    private TableColumn<Map, String> tc_WybraneIlosc;
+    private TableColumn tc_WybraneIlosc;
     @FXML
-    private TableColumn<Map, String> tc_WybraneKoszt;
+    private TableColumn tc_WybraneKoszt;
 
     private Stage stage = null;
     private User user = null;
     private ObservableList<Map<String, Object>> tableUlgi_items = FXCollections.<Map<String, Object>>observableArrayList();
-    private ObservableList<Map<String, Object>> tableWybrane_items = FXCollections.<Map<String, Object>>observableArrayList();
+    private ObservableList<Wybrane> tableWybrane_items = FXCollections.<Wybrane>observableArrayList();
 
     public void setStage(Stage stage) { this.stage = stage; }
     public void setUser(User user) { this.user = user; }
@@ -70,11 +70,11 @@ public class uSelectReliefCountFXController implements Initializable {
         tc_WybraneNazwa.setCellValueFactory(new MapValueFactory<>("wybrane_nazwa"));
         tc_WybraneIlosc.setCellValueFactory(new MapValueFactory<>("wybrane_ilosc"));
         tc_WybraneKoszt.setCellValueFactory(new MapValueFactory<>("wybrane_koszt"));
+        tv_TableWybraneUlgi.getColumns().addAll(tc_WybraneNazwa, tc_WybraneIlosc, tc_WybraneKoszt);
     }
 
     public void initTables() {
         tableUlgi_items.clear();
-        tableWybrane_items.clear();
         Connection conn = null;
         String connectionString =
                 "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/" +
@@ -86,28 +86,17 @@ public class uSelectReliefCountFXController implements Initializable {
             conn = DriverManager.getConnection(connectionString,
                     connectionProps);
             try (
-                    PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM rodzaje_biletow")
-                    ;
+                    PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM ulgi");
             ) {
-//                ResultSet rs1 = pstmt1.executeQuery();
-//                while (rs1.next()) {
-//                    Map<String, Object> item = new HashMap<>();
-//                    item.put("ulgi_nazwa", rs1.getString(1));
-//                    item.put("ulgi_znizka", rs1.getString(2));
-//                    tableUlgi_items.add(item);
-//                }
-//                rs1.close();
-//                ResultSet rs2 = pstmt1.executeQuery();
-//                while (rs2.next()) {
-//                    Map<String, Object> item = new HashMap<>();
-//                    item.put("wybrane_nazwa", rs2.getString(1));
-//                    item.put("wybrane_ilosc", rs2.getString(2));
-//                    item.put("wybrane_koszt", rs2.getFloat(3));
-//                    tableWybrane_items.add(item);
-//                }
-//                rs2.close();
-//                tv_TableUlgi.setItems(tableUlgi_items);
-//                tv_TableWybraneUlgi.setItems(tableWybrane_items);
+                ResultSet rs1 = pstmt1.executeQuery();
+                while (rs1.next()) {
+                    Map<String, Object> item = new HashMap<>();
+                    item.put("ulgi_nazwa", rs1.getString(1));
+                    item.put("ulgi_znizka", rs1.getString(2));
+                    tableUlgi_items.add(item);
+                }
+                rs1.close();
+                tv_TableUlgi.setItems(tableUlgi_items);
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -132,6 +121,9 @@ public class uSelectReliefCountFXController implements Initializable {
             alert.setContentText("Failed to connect to the database!");
             alert.showAndWait();
         }
+
+        tableWybrane_items.clear();
+        tv_TableWybraneUlgi.setItems(tableWybrane_items);
     }
 
     public void myInitialize(Map<String, Object> record) {
@@ -153,21 +145,21 @@ public class uSelectReliefCountFXController implements Initializable {
             try {
                 conn = DriverManager.getConnection(connectionString,
                         connectionProps);
-                try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM rodzaje_biletow WHERE TO_CHAR(nazwa) LIKE '%'||?||'%'");) {
-//                    pstmt1.setString(1, pattern);
-//                    ResultSet rs = pstmt1.executeQuery();
-//                    tableUlgi_items.clear();
-//                    while (rs.next()) {
-//                        ResultSet rs1 = pstmt1.executeQuery();
-//                        while (rs1.next()) {
-//                            Map<String, Object> item = new HashMap<>();
-//                            item.put("ulgi_nazwa", rs1.getString(1));
-//                            item.put("ulgi_znizka", rs1.getString(2));
-//                            tableUlgi_items.add(item);
-//                        }
-//                    }
-//                    rs.close();
-//                    tv_TableUlgi.setItems(tableUlgi_items);
+                try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM ulgi WHERE TO_CHAR(nazwa) LIKE '%'||?||'%'");) {
+                    pstmt1.setString(1, pattern);
+                    ResultSet rs = pstmt1.executeQuery();
+                    tableUlgi_items.clear();
+                    while (rs.next()) {
+                        ResultSet rs1 = pstmt1.executeQuery();
+                        while (rs1.next()) {
+                            Map<String, Object> item = new HashMap<>();
+                            item.put("ulgi_nazwa", rs1.getString(1));
+                            item.put("ulgi_znizka", rs1.getString(2));
+                            tableUlgi_items.add(item);
+                        }
+                    }
+                    rs.close();
+                    tv_TableUlgi.setItems(tableUlgi_items);
                 } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -197,30 +189,42 @@ public class uSelectReliefCountFXController implements Initializable {
 
     @FXML
     private void addUlga(MouseEvent event) {
-        if(event.getEventType() == MouseEvent.MOUSE_PRESSED) {
-            if(event.getClickCount() == 2) {
-                /*
-                ADD THE RECORD IF POSSIBLE
-                 */
-                /*
-                UPDATE TotalCost LABEL
-                 */
+        if (event.getEventType() == MouseEvent.MOUSE_PRESSED) {
+            if (event.getClickCount() == 2) {
+                ObservableList<Map<String, Object>> selectedItems = tv_TableUlgi.getSelectionModel().getSelectedItems();
+                if (selectedItems.isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Select Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Rekord nie został wybrany!");
+                    alert.showAndWait();
+                } else {
+                    Map<String, Object> record = selectedItems.get(0);
+                    Wybrane wybrany = new Wybrane(
+                            lb_Name.getText(),
+                            (String) ((Map<String,Object>) record).get("ulgi_nazwa"),
+                            "1",
+                            lb_Price.getText()
+                    );
+                    tableWybrane_items.add(wybrany);
+                }
             }
         }
     }
 
     @FXML
     private void deleteRecord(MouseEvent event) {
-        if(event.getButton() == MouseButton.PRIMARY) {
-            try {
-                /*
-                CHECK IF THE RECORD IS SELECTED
-                 */
-                Swapper swapper = new Swapper(true, null, user, null, null, "startup/sureFXML", null);
-                ((sSureFXController) swapper.getController()).myInitialize(this, null/*RECORD*/, null, null, null);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
+        if (event.getButton() == MouseButton.PRIMARY) {
+            ObservableList<Wybrane> selectedItems = tv_TableWybraneUlgi.getSelectionModel().getSelectedItems();
+            if (selectedItems.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Delete Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Produkt nie został wybrany!");
+                alert.showAndWait();
+            } else {
+                Wybrane record = selectedItems.get(0);
+                tableWybrane_items.remove(record);
             }
         }
     }
@@ -228,9 +232,7 @@ public class uSelectReliefCountFXController implements Initializable {
     @FXML
     private void addToCart(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
-            /*
-            ADD THE RECORDS IF POSSIBLE
-            */
+            user.addToKoszyk_items(tableWybrane_items);
             back(event);
         }
     }
@@ -239,7 +241,8 @@ public class uSelectReliefCountFXController implements Initializable {
     private void back(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
             try {
-                new Swapper(false, stage, user, null, null, "user/buyTicketFXML", null);
+                Swapper swapper = new Swapper(false, stage, user, null, null, "user/buyTicketFXML", null);
+                ((uBuyTicketFXController) swapper.getController()).myInitialize(false);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;

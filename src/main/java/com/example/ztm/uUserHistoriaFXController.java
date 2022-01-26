@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,10 +21,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -132,8 +135,7 @@ public class uUserHistoriaFXController implements Initializable {
             try {
                 conn = DriverManager.getConnection(connectionString,
                         connectionProps);
-                try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM wpis_historii INNER JOIN " +
-                        "bilet ON wpis_historii.bilet_id_biletu = bilet.id_biletu WHERE numer_wpisu=?");) {
+                try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM wpis_historii INNER JOIN bilet ON wpis_historii.bilet_id_biletu = bilet.id_biletu WHERE numer_wpisu=?");) {
                     pstmt1.setString(1, pattern);
                     ResultSet rs = pstmt1.executeQuery();
                     table_items.clear();
@@ -180,10 +182,87 @@ public class uUserHistoriaFXController implements Initializable {
 
     @FXML
     private void validate(MouseEvent event) {
-        if(event.getButton() == MouseButton.PRIMARY) {
-            /*
-            VALIDATE THE RECORD IF POSSIBLE
-             */
+        if (event.getButton() == MouseButton.PRIMARY) {
+            ObservableList<Map<String, Object>> selectedItems = tv_Table.getSelectionModel().getSelectedItems();
+            if (selectedItems.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Select Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Rekord nie został wybrany!");
+                alert.showAndWait();
+            } else {
+                Map<String, Object> record = selectedItems.get(0);
+                if(((String) ((Map<String,Object>) record).get("skasowany")).equals("Nie")) {
+                    Connection conn = null;
+                    String connectionString =
+                            "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/" +
+                                    "dblab02_students.cs.put.poznan.pl";
+                    Properties connectionProps = new Properties();
+                    connectionProps.put("user", "inf145326");
+                    connectionProps.put("password", "inf145326");
+                    try {
+                        conn = DriverManager.getConnection(connectionString,
+                                connectionProps);
+                        try (
+                                PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM wpis_historii WHERE numer_wpisu=?");
+                                CallableStatement cstmt1 = conn.prepareCall("{? = call skasujBilet(?,?)}");
+                                ) {
+                            pstmt1.setString(1, (String) ((Map<String,Object>) record).get("id"));
+                            ResultSet rs = pstmt1.executeQuery();
+                            rs.next();
+                            cstmt1.registerOutParameter(1, Types.INTEGER);
+                            cstmt1.setInt(2, user.getIdKonta());
+                            cstmt1.setInt(3, Integer.parseInt(rs.getString(6)));
+                            cstmt1.execute();
+                            int success = cstmt1.getInt(1);
+                            if (success == 0) {
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Insert Information");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Skasowano bilet!!");
+                                alert.showAndWait();
+                            } else if (success == 1) {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Insert Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Bilet został już skasowany!");
+                                alert.showAndWait();
+
+                            }
+                        } catch (SQLException ex) {
+                            System.out.println(ex.getMessage());
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Insert Error");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Failed to execute query!");
+                            alert.showAndWait();
+
+                        }catch (NumberFormatException ex) {
+                            System.out.println(ex.getMessage());
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Insert Error");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Podano nie numeryczne wartości w polu dotyczącym numeru w trasie!");
+                            alert.showAndWait();
+                        }
+                        try {
+                            conn.close();
+                        } catch (SQLException ex) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Connection Error");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Failed to disconnect from the database!");
+                            alert.showAndWait();
+                        }
+                    } catch (SQLException ex) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Connection Error");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Failed to connect to the database!");
+                        alert.showAndWait();
+                    }
+                }
+            }
         }
     }
 
@@ -191,7 +270,8 @@ public class uUserHistoriaFXController implements Initializable {
     private void swapKoszyk(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
             try {
-                new Swapper(false, stage, user, null, null, "user/buyTicketFXML", null);
+                Swapper swapper = new Swapper(false, stage, user, null, null, "user/buyTicketFXML", null);
+                ((uBuyTicketFXController) swapper.getController()).myInitialize(true);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
