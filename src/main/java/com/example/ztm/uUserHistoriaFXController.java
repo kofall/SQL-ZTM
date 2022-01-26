@@ -83,7 +83,7 @@ public class uUserHistoriaFXController implements Initializable {
                 ResultSet rs = pstmt1.executeQuery();
                 while (rs.next()) {
                     Map<String, Object> item = new HashMap<>();
-                    item.put("id", rs.getInt(1));
+                    item.put("id", rs.getInt(6));
                     String opis = rs.getString(8);
                     if(opis != null)
                         item.put("skasowany", "Tak");
@@ -135,13 +135,13 @@ public class uUserHistoriaFXController implements Initializable {
             try {
                 conn = DriverManager.getConnection(connectionString,
                         connectionProps);
-                try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM wpis_historii INNER JOIN bilet ON wpis_historii.bilet_id_biletu = bilet.id_biletu WHERE numer_wpisu=?");) {
+                try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM wpis_historii INNER JOIN bilet ON wpis_historii.bilet_id_biletu = bilet.id_biletu WHERE bilet_id_biletu=?");) {
                     pstmt1.setString(1, pattern);
                     ResultSet rs = pstmt1.executeQuery();
                     table_items.clear();
                     while (rs.next()) {
                         Map<String, Object> item = new HashMap<>();
-                        item.put("id", rs.getInt(1));
+                        item.put("id", rs.getInt(6));
                         String opis = rs.getString(8);
                         if(opis != null)
                             item.put("skasowany", "Tak");
@@ -207,7 +207,7 @@ public class uUserHistoriaFXController implements Initializable {
                                 PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM wpis_historii WHERE numer_wpisu=?");
                                 CallableStatement cstmt1 = conn.prepareCall("{? = call skasujBilet(?,?)}");
                                 ) {
-                            pstmt1.setString(1, (String) ((Map<String,Object>) record).get("id"));
+                            pstmt1.setInt(1, (Integer) record.get("id"));
                             ResultSet rs = pstmt1.executeQuery();
                             rs.next();
                             cstmt1.registerOutParameter(1, Types.INTEGER);
@@ -215,13 +215,13 @@ public class uUserHistoriaFXController implements Initializable {
                             cstmt1.setInt(3, Integer.parseInt(rs.getString(6)));
                             cstmt1.execute();
                             int success = cstmt1.getInt(1);
-                            if (success == 0) {
+                            if (success == 1) {
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                                 alert.setTitle("Insert Information");
                                 alert.setHeaderText(null);
-                                alert.setContentText("Skasowano bilet!!");
+                                alert.setContentText("Skasowano bilet!");
                                 alert.showAndWait();
-                            } else if (success == 1) {
+                            } else if (success == 0) {
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("Insert Error");
                                 alert.setHeaderText(null);

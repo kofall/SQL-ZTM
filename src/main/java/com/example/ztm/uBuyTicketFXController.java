@@ -218,20 +218,161 @@ public class uBuyTicketFXController implements Initializable {
     @FXML
     private void buyANDvalidate(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
-            /*
-            ADD THE RECORDS IF POSSIBLE
-             */
-            close(event);
-        }
+
+                Connection conn = null;
+                String connectionString =
+                        "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/" +
+                                "dblab02_students.cs.put.poznan.pl";
+                Properties connectionProps = new Properties();
+                connectionProps.put("user", "inf145326");
+                connectionProps.put("password", "inf145326");
+                try {
+                    conn = DriverManager.getConnection(connectionString,
+                            connectionProps);
+                    for(Map<String, Object> ticket : user.getKoszyk_items()){
+                        int count =0;
+                        for(int i = 0; i< Integer.parseInt((String) ticket.get("wybrane_ilosc"));i++){
+                            try (CallableStatement cstmt1 = conn.prepareCall("{? = call kupBilet(?,?,?)}");
+                                 CallableStatement cstmt2 = conn.prepareCall("{? = call skasujBilet(?,?)}");) {
+                                cstmt1.registerOutParameter(1, Types.INTEGER);
+                                cstmt1.setInt(2,user.getIdKonta());
+                                cstmt1.setString(3,(String) ticket.get("wybrane_nazwa"));
+                                cstmt1.setString(4,(String) ticket.get("wybrane_ulga"));
+                                cstmt1.execute();
+                                int success = cstmt1.getInt(1);
+                                System.out.println("Zakupiono bilet o id="+success);
+                                cstmt2.registerOutParameter(1, Types.INTEGER);
+                                cstmt2.setInt(2,user.getIdKonta());
+                                cstmt2.setInt(3,success);
+                                cstmt2.execute();
+                                count++;
+                            } catch (SQLException ex) {
+                                System.out.println(ex.getMessage());
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Insert Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Failed to execute query!");
+                                alert.showAndWait();
+
+                            }catch (NumberFormatException ex) {
+                                System.out.println(ex.getMessage());
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Insert Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Podano nie numeryczne wartości!");
+                                alert.showAndWait();
+                            }
+                        }
+                        if (count == Integer.parseInt((String) ticket.get("wybrane_ilosc"))){
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Insert Information");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Udane kupno biletów!");
+                            alert.showAndWait();
+                        }else{
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Insert Error");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Nieudane kupno biletów!");
+                            alert.showAndWait();
+                        }
+
+                    }
+
+                    try {
+                        conn.close();
+                    } catch (SQLException ex) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Connection Error");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Failed to disconnect from the database!");
+                        alert.showAndWait();
+                    }
+                } catch (SQLException ex) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Connection Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Failed to connect to the database!");
+                    alert.showAndWait();
+                }
+            }
+
+
     }
 
     @FXML
     private void buy(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
-            /*
-            ADD THE RECORDS IF POSSIBLE
-             */
-            close(event);
+            Connection conn = null;
+            String connectionString =
+                    "jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/" +
+                            "dblab02_students.cs.put.poznan.pl";
+            Properties connectionProps = new Properties();
+            connectionProps.put("user", "inf145326");
+            connectionProps.put("password", "inf145326");
+            try {
+                conn = DriverManager.getConnection(connectionString,
+                        connectionProps);
+                for(Map<String, Object> ticket : user.getKoszyk_items()){
+                    int count = 0;
+                    for(int i = 0; i< Integer.parseInt((String) ticket.get("wybrane_ilosc"));i++){
+                        try (CallableStatement cstmt1 = conn.prepareCall("{? = call kupBilet(?,?,?)}");) {
+                            cstmt1.registerOutParameter(1, Types.INTEGER);
+                            cstmt1.setInt(2,user.getIdKonta());
+                            cstmt1.setString(3,(String) ticket.get("wybrane_nazwa"));
+                            cstmt1.setString(4,(String) ticket.get("wybrane_ulga"));
+                            cstmt1.execute();
+                            int success = cstmt1.getInt(1);
+                            System.out.println("Zakupiono bilet o id="+success);
+                            count++;
+                        } catch (SQLException ex) {
+                            System.out.println(ex.getMessage());
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Insert Error");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Failed to execute query!");
+                            alert.showAndWait();
+
+                        }catch (NumberFormatException ex) {
+                            System.out.println(ex.getMessage());
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Insert Error");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Podano nie numeryczne wartości!");
+                            alert.showAndWait();
+                        }
+                    }
+                    if (count == Integer.parseInt((String) ticket.get("wybrane_ilosc"))){
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Insert Information");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Udane kupno biletów!");
+                        alert.showAndWait();
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Insert Error");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Nieudane kupno biletów!");
+                        alert.showAndWait();
+                    }
+                }
+
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Connection Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Failed to disconnect from the database!");
+                    alert.showAndWait();
+                }
+            } catch (SQLException ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Connection Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to connect to the database!");
+                alert.showAndWait();
+            }
         }
     }
 
