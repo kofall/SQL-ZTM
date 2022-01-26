@@ -82,8 +82,8 @@ public class aBiletyFXController implements Initializable {
                 while(rs.next()){
                     Map<String, Object> item = new HashMap<>();
                     item.put("nazwa",rs.getString(1));
-                    item.put("czas_obow",rs.getInt(2));
-                    item.put("stref",rs.getString(3));
+                    item.put("czas_obow",rs.getString(2));
+                    item.put("strefa",rs.getString(3));
                     item.put("cena",rs.getFloat(4));
                     table_items.add(item);
                 }
@@ -136,8 +136,8 @@ public class aBiletyFXController implements Initializable {
                     while(rs.next()){
                         Map<String, Object> item = new HashMap<>();
                         item.put("nazwa",rs.getString(1));
-                        item.put("czas_obow",rs.getInt(2));
-                        item.put("stref",rs.getString(3));
+                        item.put("czas_obow",rs.getString(2));
+                        item.put("strefa",rs.getString(3));
                         item.put("cena",rs.getFloat(4));
                         table_items.add(item);
                     }

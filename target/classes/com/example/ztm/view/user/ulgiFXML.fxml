@@ -93,8 +93,8 @@
          <children>
             <TableView fx:id="tv_Table" prefHeight="286.0" prefWidth="450.0" GridPane.rowIndex="1">
                <columns>
-                  <TableColumn prefWidth="348.00006103515625" text="Nazwa" />
-                  <TableColumn prefWidth="210.39990234375" text="Wartość procentowa" />
+                  <TableColumn fx:id="tc_Nazwa" prefWidth="348.00006103515625" text="Nazwa" />
+                  <TableColumn fx:id="tc_Wartosc_procentowa" prefWidth="210.39990234375" text="Wartość procentowa" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

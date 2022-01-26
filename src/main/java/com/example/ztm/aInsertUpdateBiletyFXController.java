@@ -54,7 +54,7 @@ public class aInsertUpdateBiletyFXController implements Initializable {
         prevController = controller;
         if(record!=null){
             tf_name.setText((String) record.get("nazwa"));
-            tf_Time.setText( ((Integer)record.get("czas_obow")).toString());
+            tf_Time.setText( ((String)record.get("czas_obow")));
             tf_Price.setText( ((Float)record.get("cena")).toString());
             tf_Area.setText((String) record.get("strefa"));
         }
@@ -98,10 +98,10 @@ public class aInsertUpdateBiletyFXController implements Initializable {
                 try {
                     conn = DriverManager.getConnection(connectionString,
                             connectionProps);
-                    try (CallableStatement cstmt1 = conn.prepareCall("{? = call dodajRodzajBiletu(?,?,?,?)}");) {
+                    try (CallableStatement cstmt1 = conn.prepareCall("{? = call dodajRodzajBiletu(?,TO_DSINTERVAL(?),?,?)}");) {
                         cstmt1.registerOutParameter(1, Types.INTEGER);
                         cstmt1.setString(2, tf_name.getText());
-                        cstmt1.setInt(3, Integer.parseInt(tf_Time.getText()));
+                        cstmt1.setString(3, tf_Time.getText());
                         cstmt1.setString(4, tf_Area.getText());
                         cstmt1.setFloat(5, Float.parseFloat(tf_Price.getText()));
 
@@ -178,10 +178,10 @@ public class aInsertUpdateBiletyFXController implements Initializable {
                 try {
                     conn = DriverManager.getConnection(connectionString,
                             connectionProps);
-                    try (CallableStatement cstmt1 = conn.prepareCall("{? = call zmodyfikujRodzajBiletu(?,?,?,?)}");) {
+                    try (CallableStatement cstmt1 = conn.prepareCall("{? = call zmodyfikujRodzajBiletu(?,TO_DSINTERVAL(?),?,?)}");) {
                         cstmt1.registerOutParameter(1, Types.INTEGER);
                         cstmt1.setString(2, tf_name.getText());
-                        cstmt1.setInt(3, Integer.parseInt(tf_Time.getText()));
+                        cstmt1.setString(3, tf_Time.getText());
                         cstmt1.setString(4, tf_Area.getText());
                         cstmt1.setFloat(5, Float.parseFloat(tf_Price.getText()));
 
