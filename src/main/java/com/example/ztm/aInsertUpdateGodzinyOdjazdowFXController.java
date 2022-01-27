@@ -213,36 +213,46 @@ public class aInsertUpdateGodzinyOdjazdowFXController implements Initializable {
                         conn.setAutoCommit(false);
                         pstmt1.setInt(1,id_szt);
                         pstmt1.setTimestamp(2,(Timestamp) prev_record.get("time"));
-                        pstmt1.execute();
-                        cstmt1.registerOutParameter(1, Types.INTEGER);
-                        cstmt1.setInt(2, id_szt);
-                        int year1 = 0;
-                        int month1 = 0;
-                        int day1 = 1;
-                        int hour1 = Integer.parseInt(tf_Hour.getText());
-                        int minutes1 = Integer.parseInt(tf_Minutes.getText());
-                        Timestamp start = new Timestamp(year1, month1, day1,
-                                hour1, minutes1, 0, 0);
+                        int delete_success =pstmt1.executeUpdate();
+                        if(delete_success==1){
+                            cstmt1.registerOutParameter(1, Types.INTEGER);
+                            cstmt1.setInt(2, id_szt);
+                            int year1 = 0;
+                            int month1 = 0;
+                            int day1 = 1;
+                            int hour1 = Integer.parseInt(tf_Hour.getText());
+                            int minutes1 = Integer.parseInt(tf_Minutes.getText());
+                            Timestamp start = new Timestamp(year1, month1, day1,
+                                    hour1, minutes1, 0, 0);
 
-                        cstmt1.setTimestamp(3 ,start);
+                            cstmt1.setTimestamp(3 ,start);
 
-                        cstmt1.execute();
-                        int success = cstmt1.getInt(1);
-                        if (success == 0) {
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Modify Information");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Udana modyfikacja godziny odjazdu!");
-                            alert.showAndWait();
-                            conn.commit();
-                        } else if (success == 1) {
+                            cstmt1.execute();
+                            int success = cstmt1.getInt(1);
+                            if (success == 0) {
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Modify Information");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Udana modyfikacja godziny odjazdu!");
+                                alert.showAndWait();
+                                conn.commit();
+                            } else if (success == 1) {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Modify Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Istnieje taka godzina odjazdu!");
+                                alert.showAndWait();
+                                conn.rollback();
+                            }
+                        }else{
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setTitle("Modify Error");
                             alert.setHeaderText(null);
-                            alert.setContentText("Nie istnieje taka godzina odjazdu!");
+                            alert.setContentText("Nie istnieje modyfikowana godzina odjazdu!");
                             alert.showAndWait();
                             conn.rollback();
                         }
+
                     } catch (SQLException ex) {
                         System.out.println(ex.getMessage());
                         Alert alert = new Alert(Alert.AlertType.ERROR);
