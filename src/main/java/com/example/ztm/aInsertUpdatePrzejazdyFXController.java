@@ -274,6 +274,18 @@ public class aInsertUpdatePrzejazdyFXController implements Initializable {
                                 alert.setContentText("Niepoprawne daty, data zakonczenia powinna być większa niż data rozpoczęcia!");
                                 alert.showAndWait();
 
+                            }else if (success == 3){
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Insert Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Jeden kierowca nie może być na dwóch przejazdach w tym samym czasie!");
+                                alert.showAndWait();
+                            }else if (success == 4){
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Insert Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Jeden pojazd nie może być na dwóch przejazdach w tym samym czasie!");
+                                alert.showAndWait();
                             }
                         } catch (SQLException ex) {
                             System.out.println(ex.getMessage());
@@ -318,20 +330,27 @@ public class aInsertUpdatePrzejazdyFXController implements Initializable {
     @FXML
     private void modifyRecord(MouseEvent event) {
         if(event.getButton() == MouseButton.PRIMARY) {
-            if(tf_Godz_rozp.getText().equals("")|| tf_Godz_zak.getText().equals("") ||
+            if(prev_record== null){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Modify Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Brak zaznaczonego rekordu, cofnij sie do poprzedniego ekranu i wybierz opcje zmodyfikuj!");
+                alert.showAndWait();
+            }
+            else if(tf_Godz_rozp.getText().equals("")|| tf_Godz_zak.getText().equals("") ||
                     cb_Driver.getSelectionModel().getSelectedItem().equals("Kierowca") ||
                     cb_Vehicle.getSelectionModel().getSelectedItem().equals("Pojazd") ||
                     cb_Line.getSelectionModel().getSelectedItem().equals("Linia") || dp_Start.toString().equals("") ||
                     dp_End.toString().equals("")){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Insert Error");
+                alert.setTitle("Modify Error");
                 alert.setHeaderText(null);
                 alert.setContentText("Brakujące dane!");
                 alert.showAndWait();
             }else if(!tf_Godz_rozp.getText().matches("([0-1][0-9]|[2][0-3]):([0-5][0-9])") ||
                     !tf_Godz_zak.getText().matches("([0-1][0-9]|[2][0-3]):([0-5][0-9])")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Insert Error");
+                alert.setTitle("Modify Error");
                 alert.setHeaderText(null);
                 alert.setContentText("Błędny format godziny (Poprawny: hh:mm)!");
                 alert.showAndWait();
@@ -355,58 +374,82 @@ public class aInsertUpdatePrzejazdyFXController implements Initializable {
                         pstmt1.setString(3, (String) prev_record.get("kierowca"));
                         pstmt1.setString(4, (String) prev_record.get("pojazd"));
                         pstmt1.setInt(5, (Integer) prev_record.get("linia_nr"));
-                        pstmt1.execute();
-                        cstmt1.registerOutParameter(1, Types.INTEGER);
-                        LocalDate start_d = dp_Start.getValue();
-                        LocalDate end_d = dp_End.getValue();
-                        int year1 = start_d.getYear()-1900;
-                        int month1 = start_d.getMonthValue()- 1;
-                        int day1 = start_d.getDayOfMonth() ;
-                        int hour1 = Integer.parseInt(tf_Godz_rozp.getText().split(":")[0]);
-                        int minutes1 = Integer.parseInt(tf_Godz_rozp.getText().split(":")[1]);
-                        Timestamp start = new Timestamp(year1, month1, day1,
-                                hour1, minutes1, 0, 0);
+                        int delete_success = pstmt1.executeUpdate();
+                        if(delete_success == 1){
+                            cstmt1.registerOutParameter(1, Types.INTEGER);
+                            LocalDate start_d = dp_Start.getValue();
+                            LocalDate end_d = dp_End.getValue();
+                            int year1 = start_d.getYear()-1900;
+                            int month1 = start_d.getMonthValue()- 1;
+                            int day1 = start_d.getDayOfMonth() ;
+                            int hour1 = Integer.parseInt(tf_Godz_rozp.getText().split(":")[0]);
+                            int minutes1 = Integer.parseInt(tf_Godz_rozp.getText().split(":")[1]);
+                            Timestamp start = new Timestamp(year1, month1, day1,
+                                    hour1, minutes1, 0, 0);
 
-                        cstmt1.setTimestamp(2 ,start);
-                        int year2 = end_d.getYear()-1900;
-                        int month2 = end_d.getMonthValue() - 1;
-                        int day2 = end_d.getDayOfMonth();
-                        int hour2 = Integer.parseInt(tf_Godz_zak.getText().split(":")[0]);
-                        int minutes2 = Integer.parseInt(tf_Godz_zak.getText().split(":")[1]);
-                        Timestamp end = new Timestamp(year2, month2, day2,
-                                hour2, minutes2, 0, 0);
-                        cstmt1.setTimestamp(3 ,end);
-                        cstmt1.setString(4,(String) cb_Driver.getSelectionModel().getSelectedItem());
-                        cstmt1.setString(5,(String) cb_Vehicle.getSelectionModel().getSelectedItem());
-                        cstmt1.setInt(6, Integer.parseInt((String)cb_Line.getSelectionModel().getSelectedItem()));
-                        cstmt1.execute();
-                        int success = cstmt1.getInt(1);
-                        if (success == 0) {
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Insert Information");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Udana modyfikacja przejazdu!");
-                            alert.showAndWait();
-                            conn.commit();
-                        } else if (success == 1) {
+                            cstmt1.setTimestamp(2 ,start);
+                            int year2 = end_d.getYear()-1900;
+                            int month2 = end_d.getMonthValue() - 1;
+                            int day2 = end_d.getDayOfMonth();
+                            int hour2 = Integer.parseInt(tf_Godz_zak.getText().split(":")[0]);
+                            int minutes2 = Integer.parseInt(tf_Godz_zak.getText().split(":")[1]);
+                            Timestamp end = new Timestamp(year2, month2, day2,
+                                    hour2, minutes2, 0, 0);
+                            cstmt1.setTimestamp(3 ,end);
+                            cstmt1.setString(4,(String) cb_Driver.getSelectionModel().getSelectedItem());
+                            cstmt1.setString(5,(String) cb_Vehicle.getSelectionModel().getSelectedItem());
+                            cstmt1.setInt(6, Integer.parseInt((String)cb_Line.getSelectionModel().getSelectedItem()));
+                            cstmt1.execute();
+                            int success = cstmt1.getInt(1);
+                            if (success == 0) {
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("Modify Information");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Udana modyfikacja przejazdu!");
+                                alert.showAndWait();
+                                conn.commit();
+                            } else if (success == 1) {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Modify Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Istnieje już taki przejazd!");
+                                alert.showAndWait();
+                                conn.rollback();
+                            }else if (success == 2) {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Modify Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Niepoprawne daty, data zakonczenia powinna być większa niż data rozpoczęcia!");
+                                alert.showAndWait();
+                                conn.rollback();
+                            }else if (success == 3){
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Modify Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Jeden kierowca nie może być na dwóch przejazdach w tym samym czasie!");
+                                alert.showAndWait();
+                                conn.rollback();
+                            }else if (success == 4){
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Modify Error");
+                                alert.setHeaderText(null);
+                                alert.setContentText("Jeden pojazd nie może być na dwóch przejazdach w tym samym czasie!");
+                                alert.showAndWait();
+                                conn.rollback();
+                            }
+                        }else{
                             Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Insert Error");
+                            alert.setTitle("Modify Error");
                             alert.setHeaderText(null);
-                            alert.setContentText("Istnieje już taki przejazd!");
-                            alert.showAndWait();
-                            conn.rollback();
-                        }else if (success == 2) {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Insert Error");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Niepoprawne daty, data zakonczenia powinna być większa niż data rozpoczęcia!");
+                            alert.setContentText("Nie istnieje taki przejazd przejazdu!");
                             alert.showAndWait();
                             conn.rollback();
                         }
+
                     } catch (SQLException ex) {
                         System.out.println(ex.getMessage());
                         Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Insert Error");
+                        alert.setTitle("Modify Error");
                         alert.setHeaderText(null);
                         alert.setContentText("Failed to execute query!");
                         alert.showAndWait();
