@@ -309,9 +309,11 @@ RODZAJE_BILETOW_NAZWA_p bilet.RODZAJE_BILETOW_NAZWA%TYPE,
 ULGI_NAZWA_p bilet.ULGI_NAZWA%TYPE,
 ID_PRZYSTANKU_KONIEC_p bilet.ID_PRZYSTANKU_KONIEC%TYPE,
 ID_PRZYSTANKU_POCZATEK_p bilet.ID_PRZYSTANKU_POCZATEK%TYPE) RETURN INTEGER IS
+id_bilet INTEGER;
 BEGIN
     INSERT INTO bilet VALUES(ID_BILETU_SEQ.nextval, MOMENT_SKASOWANIA_POCZATEK_p, MOMENT_SKASOWANIA_KONIEC_p, RODZAJE_BILETOW_NAZWA_p, ULGI_NAZWA_p, ID_PRZYSTANKU_KONIEC_p, ID_PRZYSTANKU_POCZATEK_p);
-    RETURN id_biletu_seq.currval;
+    SELECT id_biletu_seq.currval INTO id_bilet FROM dual;
+    RETURN id_bilet;
 END dodajBilet;
 
 CREATE OR REPLACE FUNCTION zmodyfikujBilet(ID_BILETU_p bilet.ID_BILETU%TYPE,
@@ -369,6 +371,8 @@ KIEROWCA_PESEL_p przejazdy.KIEROWCA_PESEL%TYPE,
 POJAZD_NUMER_SERYJNY_p przejazdy.POJAZD_NUMER_SERYJNY%TYPE,
 LINIA_NR_LINI_p przejazdy.LINIA_NR_LINI%TYPE) RETURN INTEGER IS
     ret_val INTEGER;
+    kierowca_konflikty INTEGER;
+    pojazd_konflikty INTEGER;
 BEGIN 
     SELECT COUNT(*) INTO ret_val FROM przejazdy WHERE 
     DATA_ROZPOCZECIA=DATA_ROZPOCZECIA_p AND
@@ -376,12 +380,25 @@ BEGIN
     KIEROWCA_PESEL=KIEROWCA_PESEL_p AND
     POJAZD_NUMER_SERYJNY=POJAZD_NUMER_SERYJNY_p AND
     LINIA_NR_LINI=LINIA_NR_LINI_p;
+   
     IF data_zakonczenia_p <= data_rozpoczecia_p THEN
             ret_val :=2;
-        END IF;
+            RETURN 2;
+    END IF;
+    SELECT COUNT(*) INTO kierowca_konflikty FROM przejazdy WHERE data_rozpoczecia_p <= data_zakonczenia AND data_zakonczenia_p >= data_rozpoczecia AND kierowca_pesel = kierowca_pesel_p;
+    SELECT COUNT(*) INTO pojazd_konflikty FROM przejazdy WHERE data_rozpoczecia_p <= data_zakonczenia AND data_zakonczenia_p >= data_rozpoczecia AND POJAZD_NUMER_SERYJNY =POJAZD_NUMER_SERYJNY_p;
+    IF kierowca_konflikty > 0 THEN 
+        ret_val:=3;
+        RETURN 3;
+    END IF;
+    IF pojazd_konflikty > 0 THEN
+        ret_val:=4;
+        RETURN 4;
+    END IF;
     IF ret_val = 0 THEN 
         INSERT INTO przejazdy VALUES(DATA_ROZPOCZECIA_p,DATA_ZAKONCZENIA_p,KIEROWCA_PESEL_p,POJAZD_NUMER_SERYJNY_p,LINIA_NR_LINI_p);
     END IF;
+    RETURN ret_val;
 END dodajPrzejazd;
 
 CREATE OR REPLACE FUNCTION kupBilet(
@@ -398,8 +415,9 @@ BEGIN
     id_biletu := dodajBilet(NULL, NULL,RODZAJE_BILETOW_NAZWA_p, ULGI_NAZWA_p, NULL, NULL);
     IF id_biletu > max_id THEN
         SELECT login INTO login_v FROM konto WHERE id_konta = user_id;
+        max_wpis :=0;
         SELECT MAX(numer_wpisu) INTO max_wpis FROM wpis_historii WHERE konto_id_konta = user_id AND konto_login = login_v;
-        INSERT INTO wpis_historii VALUES(max_wpis+1, CURRENT_TIMESTAMP, 'Zakup biletu', user_id, login_v, id_biletu);
+        INSERT INTO wpis_historii VALUES(COALESCE(max_wpis+1,0), CURRENT_TIMESTAMP, 'Zakup biletu', user_id, login_v, id_biletu);
     END IF;
     return id_biletu;
 END kupBilet;
@@ -441,9 +459,9 @@ INSERT INTO konto(id_konta,login,haslo,e_mail,imie,nazwisko,typ) VALUES (1, 'adm
 SELECT * FROM konto;
 
 INSERT INTO kierowca(PESEL, imie, nazwisko) VALUES ('75071589156','Marian','Kucharski');
-INSERT INTO kierowca(PESEL, imie, nazwisko) VALUES ('55070966271','Krystian','Soko³owski');
+INSERT INTO kierowca(PESEL, imie, nazwisko) VALUES ('55070966271','Krystian','Sokoï¿½owski');
 INSERT INTO kierowca(PESEL, imie, nazwisko) VALUES ('03242213559','Kazimierz','Sobczak');
-INSERT INTO kierowca(PESEL, imie, nazwisko) VALUES ('97103127512','Dawid','G³owacki');
+INSERT INTO kierowca(PESEL, imie, nazwisko) VALUES ('97103127512','Dawid','Gï¿½owacki');
 INSERT INTO kierowca(PESEL, imie, nazwisko) VALUES ('74030834553','Alfred','Przybylski');
 COMMIT;
 SELECT * FROM kierowca;
