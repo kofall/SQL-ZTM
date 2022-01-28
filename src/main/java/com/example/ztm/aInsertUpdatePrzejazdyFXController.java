@@ -123,19 +123,26 @@ public class aInsertUpdatePrzejazdyFXController implements Initializable {
         try {
             conn = DriverManager.getConnection(connectionString,
                     connectionProps);
-            try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT numer_seryjny FROM pojazd");
-                 PreparedStatement pstmt2 = conn.prepareStatement("SELECT pesel FROM kierowca");
+            try (PreparedStatement pstmt1 = conn.prepareStatement("SELECT * FROM pojazd");
+                 PreparedStatement pstmt2 = conn.prepareStatement("SELECT * FROM kierowca");
                  PreparedStatement pstmt3 = conn.prepareStatement("SELECT nr_lini FROM linia");)
             {
                 ResultSet rs1 = pstmt1.executeQuery();
                 while(rs1.next()){
-                    pojazd_options.add(rs1.getString(1));
+                    String nrSeryjny = rs1.getString(1);
+                    String typ = rs1.getString(4);
+                    Integer stoj = rs1.getInt(2);
+                    Integer siedz = rs1.getInt(3);
+                    pojazd_options.add(nrSeryjny + ": " + (typ.equals("T") ? "Tramwaj" : "Autobus") + ", " + stoj + "/" + siedz + " (stojące/siedzące)");
                 }
                 rs1.close();
                 cb_Vehicle.setItems(pojazd_options);
                 ResultSet rs2 = pstmt2.executeQuery();
                 while(rs2.next()){
-                    kierowca_options.add(rs2.getString(1));
+                    String pesel = rs2.getString(1);
+                    String imie = rs2.getString(2);
+                    String nazwisko = rs2.getString(3);
+                    kierowca_options.add(pesel + ": " + imie + " " + nazwisko);
                 }
                 rs2.close();
                 cb_Driver.setItems(kierowca_options);
@@ -249,8 +256,8 @@ public class aInsertUpdatePrzejazdyFXController implements Initializable {
                             Timestamp end = new Timestamp(year2, month2, day2,
                                     hour2, minutes2, 0, 0);
                             cstmt1.setTimestamp(3 ,end);
-                            cstmt1.setString(4,(String) cb_Driver.getSelectionModel().getSelectedItem());
-                            cstmt1.setString(5,(String) cb_Vehicle.getSelectionModel().getSelectedItem());
+                            cstmt1.setString(4,((String) cb_Driver.getSelectionModel().getSelectedItem()).split(":")[0]);
+                            cstmt1.setString(5,((String) cb_Vehicle.getSelectionModel().getSelectedItem()).split(":")[0]);
                             cstmt1.setInt(6, Integer.parseInt((String)cb_Line.getSelectionModel().getSelectedItem()));
                             cstmt1.execute();
                             int success = cstmt1.getInt(1);
@@ -371,8 +378,8 @@ public class aInsertUpdatePrzejazdyFXController implements Initializable {
                         conn.setAutoCommit(false);
                         pstmt1.setTimestamp(1,(Timestamp) prev_record.get("data_rozp"));
                         pstmt1.setTimestamp(2,(Timestamp) prev_record.get("data_zak"));
-                        pstmt1.setString(3, (String) prev_record.get("kierowca"));
-                        pstmt1.setString(4, (String) prev_record.get("pojazd"));
+                        pstmt1.setString(3, ((String) prev_record.get("kierowca")).split(":")[0]);
+                        pstmt1.setString(4, ((String) prev_record.get("pojazd")).split(":")[0]);
                         pstmt1.setInt(5, (Integer) prev_record.get("linia_nr"));
                         int delete_success = pstmt1.executeUpdate();
                         if(delete_success == 1){
@@ -396,8 +403,8 @@ public class aInsertUpdatePrzejazdyFXController implements Initializable {
                             Timestamp end = new Timestamp(year2, month2, day2,
                                     hour2, minutes2, 0, 0);
                             cstmt1.setTimestamp(3 ,end);
-                            cstmt1.setString(4,(String) cb_Driver.getSelectionModel().getSelectedItem());
-                            cstmt1.setString(5,(String) cb_Vehicle.getSelectionModel().getSelectedItem());
+                            cstmt1.setString(4,((String) cb_Driver.getSelectionModel().getSelectedItem()).split(":")[0]);
+                            cstmt1.setString(5,((String) cb_Vehicle.getSelectionModel().getSelectedItem()).split(":")[0]);
                             cstmt1.setInt(6, Integer.parseInt((String)cb_Line.getSelectionModel().getSelectedItem()));
                             cstmt1.execute();
                             int success = cstmt1.getInt(1);
