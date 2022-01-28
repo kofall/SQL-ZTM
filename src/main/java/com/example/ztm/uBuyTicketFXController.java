@@ -201,6 +201,9 @@ public class uBuyTicketFXController implements Initializable {
     @FXML
     private void deleteRecord(MouseEvent event) {
         if (event.getButton() == MouseButton.PRIMARY) {
+            if(event.getSource() == tv_TableWybraneBilety)
+                if(event.getClickCount() < 2)
+                    return;
             ObservableList<Map<String, Object>> selectedItems = tv_TableWybraneBilety.getSelectionModel().getSelectedItems();
             if (selectedItems.isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);

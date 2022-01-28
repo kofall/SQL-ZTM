@@ -125,7 +125,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TableView fx:id="tv_TableWybraneBilety" onMousePressed="#swapWybierzUlgi" prefHeight="200.0" prefWidth="200.0">
+                  <TableView fx:id="tv_TableWybraneBilety" onMouseClicked="#deleteRecord" prefHeight="200.0" prefWidth="200.0">
                     <columns>
                       <TableColumn fx:id="tc_WybraneNazwa" prefWidth="75.0" text="Nazwa" />
                       <TableColumn fx:id="tc_WybraneUlga" prefWidth="75.0" text="Ulga" />
