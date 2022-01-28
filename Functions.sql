@@ -1,3 +1,35 @@
+CREATE OR REPLACE PROCEDURE dodajKlienta (
+    login_p KONTO.login%TYPE,
+    haslo KONTO.haslo%TYPE,
+    e_mail KONTO.e_mail%TYPE,
+    imie KONTO.imie%TYPE,
+    nazwisko KONTO.nazwisko%TYPE,
+    typ KONTO.typ%TYPE, username_exist OUT INTEGER, valid_email_o OUT INTEGER) IS
+    valid_email Boolean;
+BEGIN
+    SELECT COUNT(*) INTO username_exist FROM konto WHERE login = login_p;
+    valid_email := REGEXP_LIKE(e_mail,'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$');
+    IF valid_email THEN
+        valid_email_o:=1;
+    ELSE
+        valid_email_o:=0;
+    END IF;
+    IF username_exist = 0 AND valid_email THEN
+        INSERT INTO KONTO VALUES(
+        id_klienta_SEQ.NEXTVAL,
+        login_p,
+        haslo,
+        e_mail,
+        imie,
+        nazwisko,
+        typ
+    );
+    END IF;
+    
+END dodajKlienta;
+
+
+
 CREATE OR REPLACE FUNCTION zarejestrujUzytkownika(login_p konto.login%TYPE,
     haslo_p konto.haslo%TYPE, e_mail_p konto.e_mail%TYPE, imie_p konto.imie%TYPE,
     nazwisko_p konto.nazwisko%TYPE) RETURN INTEGER IS
@@ -5,7 +37,7 @@ CREATE OR REPLACE FUNCTION zarejestrujUzytkownika(login_p konto.login%TYPE,
 BEGIN
     SELECT COUNT(*) INTO username_exist FROM konto WHERE login = login_p;
     IF username_exist != 1 THEN
-        INSERT INTO konto(id_konta,login,haslo,e_mail,imie,nazwisko,typ) VALUES (id_klienta_SEQ.nextval, login_p, haslo_p, e_mail_p, imie_p, nazwisko_p, 'K');
+        dodajKlienta(login_p, haslo_p, e_mail_p, imie_p, nazwisko_p, 'K');
     END IF;
     RETURN username_exist;
 END zarejestrujUzytkownika;
