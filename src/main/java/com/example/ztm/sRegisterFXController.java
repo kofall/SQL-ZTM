@@ -75,16 +75,20 @@ public class sRegisterFXController implements Initializable {
                 try {
                     conn = DriverManager.getConnection(connectionString,
                             connectionProps);
-                    try (CallableStatement cstmt1 = conn.prepareCall("{? = call zarejestrujUzytkownika(?,?,?,?,?)}");){
-                        cstmt1.registerOutParameter(1, Types.INTEGER);
-                        cstmt1.setString(2, tf_Username.getText());
-                        cstmt1.setString(3, tf_Password.getText());
-                        cstmt1.setString(4, tf_Email.getText());
-                        cstmt1.setString(5, tf_Name.getText());
-                        cstmt1.setString(6, tf_Surname.getText());
+                    try (CallableStatement cstmt1 = conn.prepareCall("{call dodajKlienta(?,?,?,?,?,?,?,?)}");){
+
+                        cstmt1.setString(1, tf_Username.getText());
+                        cstmt1.setString(2, tf_Password.getText());
+                        cstmt1.setString(3, tf_Email.getText());
+                        cstmt1.setString(4, tf_Name.getText());
+                        cstmt1.setString(5, tf_Surname.getText());
+                        cstmt1.setString(6,"K");
+                        cstmt1.registerOutParameter(7,Types.INTEGER);
+                        cstmt1.registerOutParameter(8,Types.INTEGER);
                         cstmt1.execute();
-                        int success = cstmt1.getInt(1);
-                        if(success == 0){
+                        int username_exists = cstmt1.getInt(7);
+                        int valid_email = cstmt1.getInt(8);
+                        if(username_exists == 0 && valid_email==1){
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("Registration Information");
                             alert.setHeaderText(null);
@@ -96,8 +100,11 @@ public class sRegisterFXController implements Initializable {
                                 e.printStackTrace();
                                 return;
                             }
-                        }else if(success == 1){
+                        }else if(username_exists == 1){
                             lb_Error.setText("Nazwa użytkownika zajęta!");
+                            lb_Error.setVisible(true);
+                        }else if(valid_email==0){
+                            lb_Error.setText("Niepoprawny email");
                             lb_Error.setVisible(true);
                         }
                     }catch (SQLException ex) {
