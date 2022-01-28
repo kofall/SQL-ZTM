@@ -171,31 +171,31 @@ ALTER TABLE bilet
 
 ALTER TABLE godziny_odjazdow
     ADD CONSTRAINT godz_odjazd_przyst_w_trasie_fk FOREIGN KEY ( id_przystanku_w_trasie_szt )
-        REFERENCES przystanek_w_trasie ( id_przystanku_w_trasie_szt );
+        REFERENCES przystanek_w_trasie ( id_przystanku_w_trasie_szt ) ON DELETE CASCADE;
 
 ALTER TABLE przejazdy
     ADD CONSTRAINT przejazdy_kierowcy_fk FOREIGN KEY ( kierowca_pesel )
-        REFERENCES kierowca ( pesel );
+        REFERENCES kierowca ( pesel ) ON DELETE CASCADE;
 
 ALTER TABLE przejazdy
     ADD CONSTRAINT przejazdy_linia_fk FOREIGN KEY ( linia_nr_lini )
-        REFERENCES linia ( nr_lini );
+        REFERENCES linia ( nr_lini ) ON DELETE CASCADE;
 
 ALTER TABLE przejazdy
     ADD CONSTRAINT przejazdy_pojazd_fk FOREIGN KEY ( pojazd_numer_seryjny )
-        REFERENCES pojazd ( numer_seryjny );
+        REFERENCES pojazd ( numer_seryjny ) ON DELETE CASCADE;
 
 ALTER TABLE przystanek_w_trasie
     ADD CONSTRAINT przystanki_w_trasie_linie_fk FOREIGN KEY ( linia_nr_lini )
-        REFERENCES linia ( nr_lini );
+        REFERENCES linia ( nr_lini ) ON DELETE CASCADE;
 
 ALTER TABLE przystanek_w_trasie
     ADD CONSTRAINT przystanki_w_trasie_przyst_fk FOREIGN KEY ( przystanek_nazwa )
-        REFERENCES przystanek ( nazwa );
+        REFERENCES przystanek ( nazwa ) ON DELETE CASCADE;
 
 ALTER TABLE wpis_historii
     ADD CONSTRAINT wpisy_historii_bilety_fk FOREIGN KEY ( bilet_id_biletu )
-        REFERENCES bilet ( id_biletu );
+        REFERENCES bilet ( id_biletu ) ON DELETE CASCADE;
 
 ALTER TABLE wpis_historii
     ADD CONSTRAINT wpisy_historii_konta_fk FOREIGN KEY ( konto_id_konta,
